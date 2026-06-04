@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>STROBE — QR-kode</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'DM Mono',monospace;
+  background:#030309;color:#EFF0FF;
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:40px 20px;
+}
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;opacity:.025;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px;
+}
+.wrap{max-width:420px;width:100%;position:relative;z-index:1;text-align:center;}
+.logo{
+  font-family:'Bebas Neue',sans-serif;font-size:2.6rem;
+  letter-spacing:.14em;color:#EFF0FF;
+  text-shadow:0 0 24px rgba(0,238,255,.45);
+  margin-bottom:4px;
+}
+.sub{
+  font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(0,238,255,.55);margin-bottom:36px;
+}
+.qr-card{
+  background:rgba(7,7,28,.95);
+  border:1px solid rgba(0,238,255,.14);
+  border-radius:4px;padding:36px 36px 28px;
+  display:flex;flex-direction:column;align-items:center;gap:20px;
+}
+.qr-frame{
+  background:#ffffff;padding:14px;border-radius:3px;
+  position:relative;
+  box-shadow:0 0 50px rgba(0,238,255,.15),0 0 100px rgba(157,64,255,.08);
+}
+/* Neon corner accents */
+.qr-frame::before,.qr-frame::after,
+.corner-bl,.corner-tr{
+  content:'';position:absolute;width:22px;height:22px;
+}
+.qr-frame::before{top:-2px;left:-2px;border-top:2px solid #00EEFF;border-left:2px solid #00EEFF;border-radius:2px 0 0 0;}
+.qr-frame::after{bottom:-2px;right:-2px;border-bottom:2px solid #00EEFF;border-right:2px solid #00EEFF;border-radius:0 0 2px 0;}
+.corner-bl{bottom:-2px;left:-2px;border-bottom:2px solid #9D40FF;border-left:2px solid #9D40FF;border-radius:0 0 0 2px;}
+.corner-tr{top:-2px;right:-2px;border-top:2px solid #9D40FF;border-right:2px solid #9D40FF;border-radius:0 2px 0 0;}
+#qr-img{display:block;width:280px;height:280px;}
+.qr-tag{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(239,240,255,.3);}
+.qr-link{
+  font-size:.63rem;color:rgba(0,238,255,.65);word-break:break-all;
+  border:1px solid rgba(0,238,255,.12);border-radius:2px;
+  padding:8px 14px;background:rgba(0,238,255,.04);width:100%;
+}
+/* Size buttons */
+.sizes{display:flex;gap:8px;justify-content:center;}
+.sz{
+  font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;
+  padding:6px 14px;border-radius:2px;cursor:pointer;background:none;
+  border:1px solid rgba(239,240,255,.1);color:rgba(239,240,255,.4);
+  transition:all .2s;
+}
+.sz:hover,.sz.act{border-color:rgba(0,238,255,.45);color:#00EEFF;background:rgba(0,238,255,.06);}
+/* Download button */
+.dl{
+  display:inline-flex;align-items:center;gap:8px;width:100%;justify-content:center;
+  background:#00EEFF;color:#000;border:none;cursor:pointer;
+  font-family:'DM Mono',monospace;font-size:.64rem;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;
+  padding:13px 24px;border-radius:2px;
+  box-shadow:0 0 18px rgba(0,238,255,.4);
+  transition:background .2s,box-shadow .2s,transform .2s;
+}
+.dl:hover{background:#33f3ff;box-shadow:0 0 28px rgba(0,238,255,.6);transform:translateY(-2px);}
+.dl svg{width:14px;height:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">STROBE</div>
+  <div class="sub">— QR-kode til nettsiden</div>
+
+  <div class="qr-card">
+    <div class="qr-frame">
+      <div class="corner-bl"></div>
+      <div class="corner-tr"></div>
+      <img id="qr-img"
+        src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=0&data=https://hanaamedyan.github.io/strobe-musikk/"
+        alt="QR-kode til STROBE nettside"
+        crossorigin="anonymous"/>
+    </div>
+
+    <div class="sizes">
+      <button class="sz" onclick="setSize(200,this)">200px</button>
+      <button class="sz act" onclick="setSize(280,this)">280px</button>
+      <button class="sz" onclick="setSize(400,this)">400px</button>
+      <button class="sz" onclick="setSize(600,this)">600px</button>
+      <button class="sz" onclick="setSize(1000,this)">1000px</button>
+    </div>
+
+    <div class="qr-tag">Lander på</div>
+    <div class="qr-link">hanaamedyan.github.io/strobe-musikk/</div>
+
+    <button class="dl" onclick="download()">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+      </svg>
+      Last ned PNG
+    </button>
+  </div>
+</div>
+
+<script>
+const URL_TARGET = 'https://hanaamedyan.github.io/strobe-musikk/';
+let currentSize = 280;
+
+function setSize(s, btn) {
+  currentSize = s;
+  document.querySelectorAll('.sz').forEach(b => b.classList.remove('act'));
+  btn.classList.add('act');
+  const img = document.getElementById('qr-img');
+  img.src = `https://api.qrserver.com/v1/create-qr-code/?size=${s}x${s}&margin=0&data=${encodeURIComponent(URL_TARGET)}`;
+  img.style.width = Math.min(s, 280) + 'px';
+  img.style.height = Math.min(s, 280) + 'px';
+}
+
+async function download() {
+  const btn = document.querySelector('.dl');
+  btn.textContent = 'Laster ned...';
+  try {
+    const res = await fetch(
+      `https://api.qrserver.com/v1/create-qr-code/?size=${currentSize}x${currentSize}&margin=10&data=${encodeURIComponent(URL_TARGET)}`
+    );
+    const blob = await res.blob();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `strobe-qr-${currentSize}px.png`;
+    a.click();
+  } catch(e) {
+    // fallback: open in new tab
+    window.open(
+      `https://api.qrserver.com/v1/create-qr-code/?size=${currentSize}x${currentSize}&margin=10&data=${encodeURIComponent(URL_TARGET)}`,
+      '_blank'
+    );
+  }
+  btn.innerHTML = `<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>Last ned PNG`;
+}
+</script>
+</body>
+</html>
