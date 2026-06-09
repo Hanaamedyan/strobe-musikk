@@ -144,18 +144,17 @@ nav.solid{
   justify-content:flex-end;padding:0 44px 72px;
   position:relative;overflow:hidden;
 }
-/* Animated aurora behind title */
+/* WebGL aurora shader canvas behind title */
 .hero-aurora{
-  position:absolute;top:-30%;left:50%;transform:translateX(-50%);
-  width:900px;height:700px;pointer-events:none;
-  background:
-    radial-gradient(ellipse 60% 50% at 30% 50%,rgba(157,64,255,.14) 0%,transparent 70%),
-    radial-gradient(ellipse 60% 50% at 70% 50%,rgba(0,238,255,.10) 0%,transparent 70%);
-  animation:auroraShift 8s ease-in-out infinite;
+  position:absolute;inset:0;width:100%;height:100%;
+  display:block;pointer-events:none;z-index:0;
+  mask-image:radial-gradient(ellipse 80% 70% at 50% 45%,#000 30%,transparent 88%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 45%,#000 30%,transparent 88%);
+  opacity:.95;
 }
-@keyframes auroraShift{
-  0%,100%{transform:translateX(-50%) scaleY(1);}
-  50%{transform:translateX(-50%) scaleY(1.15);}
+.hero-aurora-veil{
+  position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:linear-gradient(180deg,transparent 0%,transparent 55%,var(--bg) 100%);
 }
 .hero-eyebrow{
   font-family:'DM Mono',monospace;font-size:.62rem;font-weight:500;
@@ -611,7 +610,8 @@ footer{
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <div class="hero-aurora"></div>
+  <canvas class="hero-aurora" id="aurora-canvas"></canvas>
+  <div class="hero-aurora-veil"></div>
   <div class="hero-eyebrow">Norsk artistgruppe — tre stemmer, én lyd</div>
   <h1 class="hero-title">
     <span class="glitch-wrap" data-t="STROBE">STROBE</span>
@@ -991,6 +991,122 @@ as.addEventListener('mousedown', e => { down=true; as.classList.add('dragging');
 as.addEventListener('mouseleave', () => { down=false; as.classList.remove('dragging'); });
 as.addEventListener('mouseup', () => { down=false; as.classList.remove('dragging'); });
 as.addEventListener('mousemove', e => { if(!down) return; e.preventDefault(); as.scrollLeft = sl - (e.pageX - as.offsetLeft - sx) * 2; });
+</script>
+<!-- ━━━━━ Aurora Waves shader (OGL) — hero background ━━━━━ -->
+<script type="module">
+import { Renderer, Program, Mesh, Triangle, Vec2 } from 'https://cdn.jsdelivr.net/npm/ogl@1.0.10/+esm';
+
+const canvas = document.getElementById('aurora-canvas');
+const parent = canvas ? canvas.parentElement : null;
+if (canvas && parent) {
+
+  const vertex = `
+    attribute vec2 position;
+    void main(){ gl_Position = vec4(position, 0.0, 1.0); }
+  `;
+
+  // Fragment — adapted to Strobe palette: purple #9D40FF, cyan #00EEFF, pink #FF2A7F
+  const fragment = `
+    #ifdef GL_ES
+    precision mediump float;
+    #endif
+
+    uniform vec2  uResolution;
+    uniform float uTime;
+    uniform float uSpeed;
+    uniform float uGlow;
+
+    // Strobe palette mix: deep purple → cyan with pink kiss
+    vec3 palette(float t){
+      vec3 c1 = vec3(0.616, 0.251, 1.000);  // #9D40FF purple
+      vec3 c2 = vec3(0.000, 0.933, 1.000);  // #00EEFF cyan
+      vec3 c3 = vec3(1.000, 0.165, 0.498);  // #FF2A7F pink
+      vec3 col = mix(c1, c2, 0.5 + 0.5 * sin(t));
+      col = mix(col, c3, 0.25 + 0.25 * sin(t * 1.7 + 1.0));
+      return col;
+    }
+
+    float wave(vec2 uv, float freq, float phase){
+      return 0.4 * sin(uv.x * freq + uTime * uSpeed + phase);
+    }
+
+    float glow(float d, float strength){
+      return exp(-d * d * strength);
+    }
+
+    void main(){
+      vec2 uv = (gl_FragCoord.xy / uResolution.xy) * 2.0 - 1.0;
+      uv.x *= uResolution.x / uResolution.y;
+
+      float y = uv.y;
+
+      // Layered flowing waves at different frequencies/phases
+      float w1 = wave(uv, 3.0, 0.0);
+      float w2 = wave(uv, 5.0, 1.0);
+      float w3 = wave(uv, 7.0, 2.5);
+      float w4 = wave(uv, 2.0, 4.2) * 0.7;
+
+      float waveLine = w1 + w2 * 0.6 + w3 * 0.4 + w4 * 0.5;
+
+      // Vertical distance to wave line
+      float dist = abs(y - waveLine);
+
+      // Multi-stop glow — wider soft glow + tight bright core
+      float gSoft = glow(dist, uGlow * 0.35);
+      float gCore = glow(dist, uGlow * 1.8);
+      float g = gSoft * 0.55 + gCore * 1.1;
+
+      // Aurora gradient — palette swirls along wave + vertical position
+      vec3 col = palette(waveLine * 1.6 + y * 0.8 + uTime * 0.15);
+
+      // Background: deep blue-black matching Strobe --bg
+      vec3 bg = vec3(0.012, 0.012, 0.035);
+
+      // Blend background → aurora using glow as alpha
+      col = mix(bg, col, clamp(g * 1.4, 0.0, 1.0));
+
+      // Slight saturation/brightness lift on glow peaks
+      col += g * 0.12 * vec3(0.4, 0.6, 1.0);
+
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `;
+
+  const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, 2), canvas, alpha: false });
+  const gl = renderer.gl;
+  const geometry = new Triangle(gl);
+
+  const program = new Program(gl, {
+    vertex,
+    fragment,
+    uniforms: {
+      uTime:       { value: 0 },
+      uResolution: { value: new Vec2() },
+      uSpeed:      { value: 0.9 },
+      uGlow:       { value: 14.0 },
+    },
+  });
+
+  const mesh = new Mesh(gl, { geometry, program });
+
+  const resize = () => {
+    const w = parent.clientWidth;
+    const h = parent.clientHeight;
+    renderer.setSize(w, h);
+    program.uniforms.uResolution.value.set(w, h);
+  };
+
+  window.addEventListener('resize', resize);
+  resize();
+
+  const start = performance.now();
+  function loop(){
+    program.uniforms.uTime.value = (performance.now() - start) / 1000;
+    renderer.render({ scene: mesh });
+    requestAnimationFrame(loop);
+  }
+  loop();
+}
 </script>
 </body>
 </html>
