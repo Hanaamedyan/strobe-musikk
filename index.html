@@ -505,6 +505,94 @@ nav.solid{
 .op{border-color:rgba(157,64,255,.28);color:var(--purple);}
 .ok{border-color:rgba(255,42,127,.28);color:var(--pink);}
 
+/* ── MERCH CTA — pink-themed banner for the genser page ── */
+.merch-cta{
+  position:relative;padding:96px 44px;z-index:1;overflow:hidden;
+  background:
+    radial-gradient(ellipse 50% 60% at 30% 50%,rgba(255,42,127,.10) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 60% at 70% 50%,rgba(157,64,255,.08) 0%,transparent 60%),
+    var(--bg2);
+  border-top:1px solid rgba(255,42,127,.10);
+  border-bottom:1px solid rgba(255,42,127,.10);
+}
+.merch-cta::before{
+  content:'MERCH';
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(120px,22vw,300px);
+  color:rgba(255,42,127,.03);line-height:1;
+  white-space:nowrap;pointer-events:none;letter-spacing:-.02em;
+}
+.merch-cta-inner{
+  position:relative;z-index:1;max-width:880px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;
+}
+.merch-cta-text{display:flex;flex-direction:column;align-items:flex-start;}
+.mc-tag{
+  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--pink);margin-bottom:14px;display:inline-flex;align-items:center;gap:10px;
+}
+.mc-tag::before{content:'';display:block;width:18px;height:1px;background:var(--pink);}
+.mc-title{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,7vw,92px);
+  color:var(--white);letter-spacing:-.5px;line-height:.9;margin-bottom:18px;
+}
+.mc-title em{font-style:normal;background:linear-gradient(110deg,var(--pink),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.mc-sub{font-size:14px;font-weight:300;color:var(--muted);max-width:380px;line-height:1.8;margin-bottom:28px;}
+.mc-btn-pink{
+  display:inline-flex;align-items:center;gap:9px;
+  background:var(--pink);color:#000;
+  font-family:'DM Mono',monospace;font-size:.62rem;font-weight:600;
+  letter-spacing:.15em;text-transform:uppercase;
+  padding:.85rem 1.8rem;border-radius:2px;border:none;cursor:pointer;
+  box-shadow:0 0 22px rgba(255,42,127,.45),0 0 60px rgba(255,42,127,.15);
+  transition:box-shadow .3s,transform .2s;
+}
+.mc-btn-pink:hover{
+  box-shadow:0 0 34px rgba(255,42,127,.75),0 0 90px rgba(255,42,127,.25);
+  transform:translateY(-2px);
+}
+.mc-btn-pink svg{width:14px;height:14px;}
+/* "3D" visual on right side — animated rotating square that hints at the 3D viewer */
+.mc-visual{
+  position:relative;aspect-ratio:1;max-width:300px;margin:0 auto;
+  display:flex;align-items:center;justify-content:center;perspective:600px;
+}
+.mc-cube{
+  width:60%;height:60%;position:relative;
+  transform-style:preserve-3d;
+  animation:mcSpin 9s linear infinite;
+}
+@keyframes mcSpin{from{transform:rotateY(0)}to{transform:rotateY(360deg)}}
+.mc-face{
+  position:absolute;inset:0;
+  border:1px solid rgba(255,42,127,.4);
+  background:linear-gradient(135deg,rgba(255,42,127,.10),rgba(157,64,255,.06));
+  box-shadow:inset 0 0 40px rgba(255,42,127,.12),0 0 30px rgba(255,42,127,.18);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.08em;
+  color:rgba(239,240,255,.4);text-shadow:0 0 18px rgba(255,42,127,.5);
+}
+.mc-face.front{transform:translateZ(70px);}
+.mc-face.back{transform:rotateY(180deg) translateZ(70px);}
+.mc-face.left{transform:rotateY(-90deg) translateZ(70px);}
+.mc-face.right{transform:rotateY(90deg) translateZ(70px);}
+.mc-orbit{
+  position:absolute;inset:-5%;border:1px dashed rgba(255,42,127,.18);
+  border-radius:50%;animation:mcOrbit 14s linear infinite;
+}
+.mc-orbit::before{
+  content:'';position:absolute;top:50%;left:0;width:6px;height:6px;border-radius:50%;
+  background:var(--pink);box-shadow:0 0 14px var(--pink);transform:translate(-50%,-50%);
+}
+@keyframes mcOrbit{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@media(max-width:768px){
+  .merch-cta{padding:72px 18px;}
+  .merch-cta-inner{grid-template-columns:1fr;gap:32px;text-align:center;}
+  .merch-cta-text{align-items:center;}
+  .mc-sub{margin-left:auto;margin-right:auto;}
+  .mc-visual{max-width:220px;}
+}
+
 /* ── STREAM CTA ── */
 .stream-cta{
   text-align:center;position:relative;
@@ -833,6 +921,30 @@ footer{
     </div>
   </div>
 </section>
+
+<!-- MERCH CTA — link to genser page -->
+<div class="merch-cta">
+  <div class="merch-cta-inner">
+    <div class="merch-cta-text">
+      <div class="mc-tag rev">Helt ny</div>
+      <h2 class="mc-title rev d1">STROBE<br/><em>genser.</em></h2>
+      <p class="mc-sub rev d2">Begrenset opplag. Sort økologisk bomullsgenser med STROBE-print foran og signaturfoto på ryggen. Se 3D-modellen — dra for å rotere.</p>
+      <a href="genser.html" class="mc-btn-pink rev d3">
+        Se merch
+        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      </a>
+    </div>
+    <div class="mc-visual rev d2">
+      <div class="mc-orbit"></div>
+      <div class="mc-cube">
+        <div class="mc-face front">STROBE</div>
+        <div class="mc-face back">STROBE</div>
+        <div class="mc-face left">3D</div>
+        <div class="mc-face right">3D</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- STREAM CTA -->
 <div class="stream-cta">
