@@ -144,15 +144,14 @@ nav.solid{
   justify-content:flex-end;padding:0 44px 72px;
   position:relative;overflow:hidden;
 }
-/* Paper Design Warp shader mount — behind hero title */
+/* AuroraWaves OGL shader canvas — behind hero title */
 .hero-aurora{
   position:absolute;inset:0;width:100%;height:100%;
-  display:block;pointer-events:none;z-index:0;overflow:hidden;
+  display:block;pointer-events:none;z-index:0;
   mask-image:radial-gradient(ellipse 80% 70% at 50% 45%,#000 30%,transparent 88%);
   -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 45%,#000 30%,transparent 88%);
   opacity:.95;
 }
-#warp-mount canvas{display:block;width:100%;height:100%;}
 .hero-aurora-veil{
   position:absolute;inset:0;pointer-events:none;z-index:1;
   background:linear-gradient(180deg,transparent 0%,transparent 55%,var(--bg) 100%);
@@ -613,7 +612,7 @@ footer{
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <div class="hero-aurora" id="warp-mount"></div>
+  <canvas class="hero-aurora" id="aurora-canvas"></canvas>
   <div class="hero-aurora-veil"></div>
   <div class="hero-eyebrow">Norsk artistgruppe — tre stemmer, én lyd</div>
   <h1 class="hero-title">
@@ -996,36 +995,109 @@ as.addEventListener('mouseleave', () => { down=false; as.classList.remove('dragg
 as.addEventListener('mouseup', () => { down=false; as.classList.remove('dragging'); });
 as.addEventListener('mousemove', e => { if(!down) return; e.preventDefault(); as.scrollLeft = sl - (e.pageX - as.offsetLeft - sx) * 2; });
 </script>
-<!-- ━━━━━ Paper Design Warp (real component via React+ESM CDN) ━━━━━ -->
+<!-- ━━━━━ AuroraWaves shader (OGL — vanilla, no React) ━━━━━ -->
 <script type="module">
-import React from 'https://esm.sh/react@18.3.1';
-import ReactDOM from 'https://esm.sh/react-dom@18.3.1/client';
-import { Warp } from 'https://esm.sh/@paper-design/shaders-react@0.0.50?deps=react@18.3.1,react-dom@18.3.1';
+import { Renderer, Program, Mesh, Triangle, Vec2 } from 'https://cdn.jsdelivr.net/npm/ogl@1.0.10/+esm';
 
-const mount = document.getElementById('warp-mount');
-if (mount) {
-  const root = ReactDOM.createRoot(mount);
-  root.render(
-    React.createElement(Warp, {
-      style: { width: '100%', height: '100%' },
-      proportion: 0.45,
-      softness: 1,
-      distortion: 0.25,
-      swirl: 0.8,
-      swirlIterations: 10,
-      shape: 'checks',
-      shapeScale: 0.1,
-      scale: 1,
-      rotation: 0,
-      speed: 1,
-      colors: [
-        'hsl(203, 100%, 62%)',
-        'hsl(255, 100%, 72%)',
-        'hsl(158, 99%, 59%)',
-        'hsl(264, 100%, 61%)'
-      ]
-    })
-  );
+const canvas = document.getElementById('aurora-canvas');
+const parent = canvas ? canvas.parentElement : null;
+
+if (canvas && parent) {
+
+  // Config — equivalent to the React component defaults
+  const SPEED            = 1.0;
+  const GLOW             = 15.0;
+  const THEME            = 0.0;  // 0 = dark, 1 = light
+  const RESOLUTION_SCALE = 1.0;
+
+  const vertex = `
+    attribute vec2 position;
+    void main(){ gl_Position = vec4(position, 0.0, 1.0); }
+  `;
+
+  const fragment = `
+    #ifdef GL_ES
+    precision mediump float;
+    #endif
+
+    uniform vec2  uResolution;
+    uniform float uTime;
+    uniform float uSpeed;
+    uniform float uGlow;
+    uniform float uTheme;
+
+    vec3 palette(float t){
+      return mix(
+        vec3(0.1, 0.2, 0.5),  // deep blue
+        vec3(0.8, 0.4, 0.9),  // magenta
+        0.5 + 0.5 * sin(t)
+      );
+    }
+
+    float wave(vec2 uv, float freq, float phase){
+      return 0.4 * sin(uv.x * freq + uTime * uSpeed + phase);
+    }
+
+    float glow(float d, float strength){
+      return exp(-d * d * strength);
+    }
+
+    void main(){
+      vec2 uv = (gl_FragCoord.xy / uResolution.xy) * 2.0 - 1.0;
+      uv.x *= uResolution.x / uResolution.y;
+      float y = uv.y;
+
+      float w1 = wave(uv, 3.0, 0.0);
+      float w2 = wave(uv, 5.0, 1.0);
+      float w3 = wave(uv, 7.0, 2.5);
+      float waveLine = w1 + w2 * 0.6 + w3 * 0.4;
+
+      float dist = abs(y - waveLine);
+      float g = glow(dist, uGlow);
+
+      vec3 col = palette(waveLine + y);
+      vec3 bg  = mix(vec3(0.02, 0.02, 0.05), vec3(1.0), uTheme);
+      col = mix(bg, col, g * 1.5);
+
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `;
+
+  const renderer = new Renderer({
+    dpr: Math.min(window.devicePixelRatio, 2),
+    canvas,
+    alpha: false,
+  });
+  const gl  = renderer.gl;
+  const geo = new Triangle(gl);
+
+  const program = new Program(gl, {
+    vertex, fragment,
+    uniforms: {
+      uTime:       { value: 0 },
+      uResolution: { value: new Vec2() },
+      uSpeed:      { value: SPEED },
+      uGlow:       { value: GLOW  },
+      uTheme:      { value: THEME },
+    },
+  });
+
+  const mesh = new Mesh(gl, { geometry: geo, program });
+
+  const resize = () => {
+    const w = parent.clientWidth, h = parent.clientHeight;
+    renderer.setSize(w * RESOLUTION_SCALE, h * RESOLUTION_SCALE);
+    program.uniforms.uResolution.value.set(w, h);
+  };
+  window.addEventListener('resize', resize);
+  resize();
+
+  const start = performance.now();
+  (function loop(){
+    program.uniforms.uTime.value = (performance.now() - start) / 1000;
+    renderer.render({ scene: mesh });
+    requestAnimationFrame(loop);
+  })();
 }
 </script>
 </body>
