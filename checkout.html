@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Checkout — STROBE Merch</title>
+<meta name="description" content="Fullfør bestillingen av STROBE-genseren."/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23030309'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Arial Black,sans-serif' font-size='17' font-weight='900' fill='%2300EEFF'%3ES%3C/text%3E%3C/svg%3E"/>
+<meta name="theme-color" content="#030309"/>
+
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#030309; --bg2:#07071C; --bg3:#0D0D28;
+  --cyan:#00EEFF; --pink:#FF2A7F; --purple:#9D40FF;
+  --white:#EFF0FF; --muted:rgba(239,240,255,.45); --dim:rgba(239,240,255,.18);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100dvh;}
+a{text-decoration:none;color:inherit;}
+::-webkit-scrollbar{width:2px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--cyan);}
+
+/* Background atmosphere */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 60% at 30% 20%,rgba(0,238,255,.05) 0%,transparent 55%),
+    radial-gradient(ellipse 60% 50% at 70% 80%,rgba(157,64,255,.06) 0%,transparent 60%);
+}
+body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px;
+}
+
+/* HEADER */
+header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 36px;
+  background:linear-gradient(180deg,rgba(3,3,9,.85) 0%,transparent 100%);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.14em;color:var(--white);text-shadow:0 0 18px rgba(0,238,255,.45);}
+.back-link{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:.62rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);transition:color .2s;}
+.back-link:hover{color:var(--cyan);}
+.back-link svg{width:14px;height:14px;}
+
+/* MAIN */
+main{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:120px 36px 80px;display:grid;grid-template-columns:1.1fr .9fr;gap:48px;}
+
+/* CHECKOUT FORM */
+.checkout-side{display:flex;flex-direction:column;gap:32px;}
+.step{display:flex;flex-direction:column;gap:18px;}
+.step-head{display:flex;align-items:center;gap:14px;}
+.step-num{width:30px;height:30px;border-radius:50%;background:var(--cyan);color:#000;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:.7rem;font-weight:700;box-shadow:0 0 18px rgba(0,238,255,.4);flex-shrink:0;}
+.step-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.04em;color:var(--white);line-height:1;}
+
+/* Form fields */
+.fg{display:flex;flex-direction:column;gap:6px;}
+.fg label{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);}
+.fg input,.fg select,.fg textarea{
+  background:rgba(7,7,28,.6);border:1px solid rgba(239,240,255,.08);border-radius:3px;
+  font-family:'Space Grotesk',sans-serif;font-size:14px;color:var(--white);
+  padding:12px 14px;outline:none;transition:border-color .2s,background .2s;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:rgba(0,238,255,.45);background:rgba(7,7,28,.85);}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(239,240,255,.22);}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.fg-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+
+/* SIZE PICKER */
+.sizes{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.size{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  height:54px;background:rgba(7,7,28,.6);border:1px solid rgba(239,240,255,.10);border-radius:3px;
+  font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.06em;color:var(--white);
+  cursor:pointer;transition:border-color .2s,background .2s,transform .15s;
+  user-select:none;
+}
+.size:hover{border-color:rgba(0,238,255,.35);}
+.size input{position:absolute;opacity:0;pointer-events:none;}
+.size.selected{
+  background:rgba(0,238,255,.10);
+  border-color:var(--cyan);
+  box-shadow:0 0 18px rgba(0,238,255,.25),inset 0 0 12px rgba(0,238,255,.08);
+  color:var(--cyan);
+}
+
+/* QTY */
+.qty{display:inline-flex;align-items:stretch;background:rgba(7,7,28,.6);border:1px solid rgba(239,240,255,.10);border-radius:3px;padding:0;width:fit-content;overflow:hidden;}
+.qty button{
+  width:46px;height:46px;background:transparent;border:none;color:var(--cyan);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:background .2s,color .2s;
+  -webkit-appearance:none;appearance:none;font-size:0;line-height:0;padding:0;
+}
+.qty button:hover{background:rgba(0,238,255,.12);}
+.qty button:active{background:rgba(0,238,255,.22);}
+.qty button svg{width:14px;height:14px;display:block;}
+.qty .qty-val{
+  width:58px;height:46px;background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--white);
+  border-left:1px solid rgba(239,240,255,.08);border-right:1px solid rgba(239,240,255,.08);
+  user-select:none;letter-spacing:.02em;
+}
+
+/* SUMMARY (right panel — sticky) */
+.summary{position:sticky;top:90px;height:fit-content;
+  background:rgba(7,7,28,.7);border:1px solid rgba(239,240,255,.06);border-radius:4px;
+  padding:28px;display:flex;flex-direction:column;gap:18px;
+  box-shadow:0 14px 48px rgba(0,0,0,.5),0 0 60px rgba(0,238,255,.04);
+}
+.sum-head{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.04em;color:var(--white);border-bottom:1px solid rgba(239,240,255,.06);padding-bottom:14px;}
+
+/* Mini product card */
+.prod{display:flex;gap:14px;}
+.prod-art{width:78px;aspect-ratio:1;border-radius:3px;flex-shrink:0;
+  background:
+    linear-gradient(180deg,#000 0%,#111 100%);
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(239,240,255,.06);
+  font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:.06em;color:var(--white);
+}
+.prod-info{flex:1;display:flex;flex-direction:column;gap:4px;justify-content:center;}
+.prod-name{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:.04em;color:var(--white);line-height:1;}
+.prod-meta{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+.prod-meta span.cyan{color:var(--cyan);}
+
+/* Cost rows */
+.cost{display:flex;flex-direction:column;gap:9px;border-top:1px solid rgba(239,240,255,.06);padding-top:14px;}
+.cost-row{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--muted);}
+.cost-row strong{color:var(--white);font-weight:500;}
+.cost-row.total{border-top:1px solid rgba(239,240,255,.06);padding-top:14px;margin-top:6px;font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.04em;color:var(--white);}
+.cost-row.total .total-amt{color:var(--cyan);text-shadow:0 0 18px rgba(0,238,255,.35);}
+
+/* PAY BUTTON */
+.btn-pay{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  background:var(--cyan);color:#000;font-family:'DM Mono',monospace;font-size:.7rem;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;
+  padding:.95rem 1.5rem;border-radius:2px;border:none;cursor:pointer;
+  box-shadow:0 0 20px rgba(0,238,255,.45),0 0 50px rgba(0,238,255,.14);
+  transition:box-shadow .3s,transform .2s,background .2s;
+  width:100%;
+}
+.btn-pay:hover{box-shadow:0 0 30px rgba(0,238,255,.7),0 0 80px rgba(0,238,255,.22);transform:translateY(-2px);}
+.btn-pay:disabled{opacity:.55;cursor:not-allowed;background:rgba(0,238,255,.3);box-shadow:none;transform:none;}
+.btn-pay svg{width:14px;height:14px;}
+
+/* PRE-ORDER NOTE */
+.secure{display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);justify-content:center;text-align:center;margin-top:4px;}
+.secure svg{width:11px;height:11px;color:var(--pink);}
+
+/* SUCCESS OVERLAY */
+.success-overlay{
+  position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;
+  background:rgba(3,3,9,.93);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  padding:40px 24px;
+}
+.success-overlay.open{display:flex;}
+.success-card{
+  max-width:480px;width:100%;text-align:center;
+  background:rgba(7,7,28,.85);border:1px solid rgba(0,238,255,.25);border-radius:4px;
+  padding:48px 36px;
+  box-shadow:0 0 80px rgba(0,238,255,.18),0 24px 60px rgba(0,0,0,.6);
+}
+.check-circle{width:72px;height:72px;border-radius:50%;background:var(--cyan);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 22px;
+  box-shadow:0 0 36px rgba(0,238,255,.55);
+  animation:checkPop .6s cubic-bezier(.32,.72,0,1.2);
+}
+@keyframes checkPop{0%{transform:scale(0)}80%{transform:scale(1.1)}100%{transform:scale(1)}}
+.check-circle svg{width:34px;height:34px;color:#000;}
+.success-title{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;letter-spacing:.02em;color:var(--white);margin-bottom:12px;line-height:.95;}
+.success-title em{font-style:normal;color:var(--cyan);}
+.success-msg{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:28px;}
+.success-msg strong{color:var(--white);font-weight:500;}
+.success-orderno{display:inline-block;background:rgba(0,238,255,.08);border:1px solid rgba(0,238,255,.25);border-radius:2px;padding:8px 14px;font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.18em;color:var(--cyan);margin-bottom:24px;}
+.success-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.btn-border{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(0,238,255,.3);color:var(--cyan);font-family:'DM Mono',monospace;font-size:.62rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;padding:.65rem 1.4rem;border-radius:2px;cursor:pointer;background:none;transition:border-color .2s,box-shadow .2s,transform .2s;}
+.btn-border:hover{border-color:var(--cyan);box-shadow:0 0 16px rgba(0,238,255,.15);transform:translateY(-2px);}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  main{grid-template-columns:1fr;padding:96px 18px 60px;gap:32px;}
+  .summary{position:relative;top:auto;}
+}
+@media(max-width:600px){
+  header{padding:14px 18px;}
+  .logo{font-size:1.3rem;}
+  .fg-row,.fg-row-3{grid-template-columns:1fr;}
+  .step-title{font-size:1.4rem;}
+  .success-title{font-size:2rem;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">STROBE</a>
+  <a href="genser.html" class="back-link">
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    Tilbake til merch
+  </a>
+</header>
+
+<main>
+  <!-- LEFT — checkout form -->
+  <form class="checkout-side" id="checkoutForm" novalidate>
+
+    <!-- STEP 1 — Størrelse + antall -->
+    <div class="step">
+      <div class="step-head"><div class="step-num">1</div><div class="step-title">Velg størrelse</div></div>
+      <div class="sizes" id="sizes">
+        <label class="size"><input type="radio" name="size" value="XS"/>XS</label>
+        <label class="size"><input type="radio" name="size" value="S"/>S</label>
+        <label class="size selected"><input type="radio" name="size" value="M" checked/>M</label>
+        <label class="size"><input type="radio" name="size" value="L"/>L</label>
+        <label class="size"><input type="radio" name="size" value="XL"/>XL</label>
+      </div>
+
+      <div class="fg" style="margin-top:6px;">
+        <label>Antall</label>
+        <div class="qty">
+          <button type="button" id="qtyDown" aria-label="Reduser antall">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14"/></svg>
+          </button>
+          <div class="qty-val" id="qty">1</div>
+          <button type="button" id="qtyUp" aria-label="Øk antall">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2 — Leveringsinfo -->
+    <div class="step">
+      <div class="step-head"><div class="step-num">2</div><div class="step-title">Leveringsinfo</div></div>
+
+      <div class="fg-row">
+        <div class="fg"><label>Fornavn *</label><input type="text" name="firstname" required placeholder="Ola"/></div>
+        <div class="fg"><label>Etternavn *</label><input type="text" name="lastname" required placeholder="Nordmann"/></div>
+      </div>
+      <div class="fg"><label>E-post *</label><input type="email" name="email" required placeholder="din@epost.no"/></div>
+      <div class="fg"><label>Telefon</label><input type="tel" name="phone" placeholder="+47 123 45 678"/></div>
+      <div class="fg"><label>Adresse *</label><input type="text" name="address" required placeholder="Eksempelveien 12"/></div>
+      <div class="fg-row-3">
+        <div class="fg"><label>Postnummer *</label><input type="text" name="zip" required placeholder="0000" maxlength="4"/></div>
+        <div class="fg"><label>By *</label><input type="text" name="city" required placeholder="Oslo"/></div>
+        <div class="fg">
+          <label>Land</label>
+          <select name="country">
+            <option>Norge</option><option>Sverige</option><option>Danmark</option><option>Finland</option><option>Island</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fg" style="margin-top:8px;">
+        <label>Melding til oss (valgfritt)</label>
+        <textarea name="note" rows="3" placeholder="Spesielle ønsker eller spørsmål..." style="background:rgba(7,7,28,.6);border:1px solid rgba(239,240,255,.08);border-radius:3px;font-family:'Space Grotesk',sans-serif;font-size:14px;color:var(--white);padding:12px 14px;outline:none;transition:border-color .2s,background .2s;resize:vertical;min-height:80px;"></textarea>
+      </div>
+    </div>
+
+  </form>
+
+  <!-- RIGHT — order summary -->
+  <aside class="summary">
+    <div class="sum-head">Ordre</div>
+    <div class="prod">
+      <div class="prod-art">STROBE</div>
+      <div class="prod-info">
+        <div class="prod-name">Strobe genser</div>
+        <div class="prod-meta">Sort · <span id="sumSize" class="cyan">M</span> · <span id="sumQty">×1</span></div>
+      </div>
+    </div>
+    <div class="cost">
+      <div class="cost-row"><span>Pris pr stk</span><strong>888 kr</strong></div>
+      <div class="cost-row"><span>Frakt (PostNord 2–4 dgr)</span><strong>69 kr</strong></div>
+      <div class="cost-row"><span>MVA inkl.</span><strong>—</strong></div>
+      <div class="cost-row total"><span>Totalt</span><span class="total-amt" id="sumTotal">957 kr</span></div>
+    </div>
+    <button type="submit" form="checkoutForm" class="btn-pay" id="payBtn">
+      Pre order
+      <svg fill="currentColor" viewBox="0 0 24 24"><path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    </button>
+    <div class="secure">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Bestillingen sendes til oss og vi tar kontakt
+    </div>
+  </aside>
+</main>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-card">
+    <div class="check-circle">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <h2 class="success-title">Takk for<br/><em>bestillingen!</em></h2>
+    <p class="success-msg">Vi har mottatt bestillingen din og en bekreftelse er sendt til <strong id="confirmEmail">din@epost.no</strong>. Vi tar kontakt for betaling og levering — vanligvis innen 24 timer.</p>
+    <div class="success-orderno" id="orderNo">STR-000000</div>
+    <div class="success-btns">
+      <a href="index.html" class="btn-border">Tilbake til STROBE</a>
+      <a href="genser.html" class="btn-border" style="border-color:rgba(255,42,127,.3);color:var(--pink);">Se merch</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const UNIT = 888, SHIPPING = 69;
+
+// ── SIZE PICKER ──
+const sizes = document.querySelectorAll('#sizes .size');
+sizes.forEach(s => s.addEventListener('click', () => {
+  sizes.forEach(x => x.classList.remove('selected'));
+  s.classList.add('selected');
+  s.querySelector('input').checked = true;
+  document.getElementById('sumSize').textContent = s.querySelector('input').value;
+}));
+
+// ── QTY ──
+const qtyEl = document.getElementById('qty');
+let qty = 1;
+function setQty(v){
+  qty = Math.max(1, Math.min(10, v|0));
+  qtyEl.textContent = qty;
+  document.getElementById('sumQty').textContent = '×' + qty;
+  document.getElementById('sumTotal').textContent = (qty * UNIT + SHIPPING) + ' kr';
+}
+document.getElementById('qtyDown').addEventListener('click', () => setQty(qty - 1));
+document.getElementById('qtyUp').addEventListener('click', () => setQty(qty + 1));
+
+// ── SUBMIT → Sender bestillingen som e-post til yamsasno@gmail.com via Web3Forms ──
+const WEB3_KEY = '79d11e30-fd01-499a-93b2-72a2831a8e61';
+
+const form = document.getElementById('checkoutForm');
+const payBtn = document.getElementById('payBtn');
+const overlay = document.getElementById('successOverlay');
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+
+  // Validér påkrevde felt
+  let valid = true;
+  form.querySelectorAll('[required]').forEach(el => {
+    if (!el.value.trim()) { el.style.borderColor = 'rgba(255,42,127,.6)'; valid = false; }
+    else el.style.borderColor = '';
+  });
+  if (!valid) {
+    form.querySelector('[required][style*="rgba(255,42,127"]')?.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
+  const size = document.querySelector('input[name="size"]:checked')?.value || 'L';
+  const total = qty * UNIT + SHIPPING;
+  const orderNo = 'STR-' + Math.floor(100000 + Math.random()*900000);
+
+  const fd = new FormData(form);
+  const data = Object.fromEntries(fd.entries());
+
+  // Set fields Web3Forms uses
+  fd.append('access_key', WEB3_KEY);
+  fd.append('subject', `🛒 Ny STROBE-bestilling — ${orderNo} (${data.firstname || ''} ${data.lastname || ''})`);
+  fd.append('from_name', 'STROBE Merch');
+  fd.append('replyto', data.email || '');
+
+  // Pretty plaintext order body
+  fd.append('message', [
+    '━━━ NY BESTILLING — STROBE Genser ━━━',
+    `Ordrenr: ${orderNo}`,
+    `Tidspunkt: ${new Date().toLocaleString('no-NO')}`,
+    '',
+    '── PRODUKT ──',
+    `Strobe Genser (sort)`,
+    `Størrelse:  ${size}`,
+    `Antall:     ${qty}`,
+    `Pris/stk:   ${UNIT} kr`,
+    `Frakt:      ${SHIPPING} kr`,
+    `TOTALT:     ${total} kr`,
+    '',
+    '── KUNDE ──',
+    `Navn:       ${data.firstname || ''} ${data.lastname || ''}`,
+    `E-post:     ${data.email || ''}`,
+    `Telefon:    ${data.phone || '—'}`,
+    '',
+    '── LEVERING ──',
+    `Adresse:    ${data.address || ''}`,
+    `Postnr:     ${data.zip || ''}`,
+    `By:         ${data.city || ''}`,
+    `Land:       ${data.country || 'Norge'}`,
+    '',
+    '── MELDING FRA KUNDE ──',
+    `${data.note || '(ingen)'}`,
+    '',
+    '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
+  ].join('\n'));
+
+  payBtn.disabled = true;
+  payBtn.innerHTML = 'Sender bestilling<svg style="margin-left:8px;width:14px;height:14px;animation:spin 1s linear infinite;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-opacity=".25"/><path d="M22 12a10 10 0 01-10 10" stroke-linecap="round"/></svg>';
+
+  try {
+    const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd });
+    const j = await r.json();
+    if (!j.success) throw new Error(j.message || 'Innsending feilet');
+
+    document.getElementById('confirmEmail').textContent = data.email || 'din e-post';
+    document.getElementById('orderNo').textContent = orderNo;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  } catch (err) {
+    payBtn.disabled = false;
+    payBtn.innerHTML = 'Prøv igjen — kontakt oss på post@strobe.no hvis problemet vedvarer';
+    console.error('Order submit failed:', err);
+  }
+});
+
+// Spin keyframe
+const sty = document.createElement('style');
+sty.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
+document.head.appendChild(sty);
+</script>
+
+</body>
+</html>
