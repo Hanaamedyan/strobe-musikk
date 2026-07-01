@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Om Strobe</title>
+<meta name="description" content="Strobe er et norsk artistkollektiv bestående av tre artister som skaper musikk mellom lys og skygge."/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#030309;--bg2:#07071C;--bg3:#0D0D28;--cyan:#00EEFF;--pink:#FF2A7F;--purple:#9D40FF;--white:#EFF0FF;--muted:rgba(239,240,255,.45);--dim:rgba(239,240,255,.18);}
+html{scroll-behavior:smooth;}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+::-webkit-scrollbar{width:2px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--cyan);}
+
+#cur{width:10px;height:10px;background:var(--cyan);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .15s,height .15s,background .2s;mix-blend-mode:screen;}
+#cur-ring{width:34px;height:34px;border:1.5px solid rgba(0,238,255,.35);border-radius:50%;position:fixed;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:left .09s ease,top .09s ease;}
+.is-hovering #cur{width:16px;height:16px;background:var(--pink);}
+.is-hovering #cur-ring{width:52px;height:52px;border-color:rgba(255,42,127,.3);}
+body::before{content:'';position:fixed;inset:0;z-index:9995;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 4px);}
+body::after{content:'';position:fixed;inset:0;z-index:9994;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 44px;background:rgba(3,3,9,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,238,255,.07);}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.12em;color:var(--white);text-shadow:0 0 18px rgba(0,238,255,.45);}
+.nav-center{display:flex;gap:2rem;list-style:none;}
+.nav-center a{font-family:'DM Mono',monospace;font-size:.65rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);transition:color .2s;}
+.nav-center a:hover,.nav-center a.active{color:var(--cyan);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-sp{display:inline-flex;align-items:center;gap:7px;background:#1DB954;color:#000;font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:.5rem 1.1rem;border-radius:20px;transition:background .2s,transform .2s;box-shadow:0 0 16px rgba(29,185,84,.25);}
+.nav-sp:hover{background:#1ed760;transform:translateY(-1px);}
+.nav-sp svg{width:13px;height:13px;}
+.nav-ig{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(239,240,255,.15);color:var(--muted);font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:.5rem 1.1rem;border-radius:20px;transition:border-color .2s,color .2s,transform .2s;}
+.nav-ig:hover{border-color:rgba(239,240,255,.4);color:var(--white);transform:translateY(-1px);}
+.nav-ig svg{width:13px;height:13px;}
+.burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;}
+.burger span{display:block;width:19px;height:1px;background:var(--white);transition:all .3s;}
+.burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.burger.open span:nth-child(2){opacity:0;}
+.burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+.mob-nav{display:none;position:fixed;inset:0;background:rgba(3,3,9,.98);z-index:499;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-top:2px solid var(--cyan);}
+.mob-nav.open{display:flex;}
+.mob-nav a{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:rgba(239,240,255,.45);letter-spacing:.1em;transition:color .2s;}
+.mob-nav a:hover{color:var(--cyan);}
+
+/* HERO */
+.page-hero{
+  min-height:100vh;display:flex;align-items:flex-end;
+  padding:140px 44px 80px;
+  position:relative;overflow:hidden;
+  border-bottom:1px solid rgba(0,238,255,.07);
+}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;}
+.hero-orb1{width:500px;height:500px;background:rgba(157,64,255,.18);top:-100px;right:-100px;}
+.hero-orb2{width:400px;height:400px;background:rgba(0,238,255,.1);bottom:-100px;left:-50px;}
+.hero-bg-letter{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(20rem,40vw,50rem);
+  color:rgba(239,240,255,.025);line-height:1;pointer-events:none;user-select:none;
+  letter-spacing:.05em;
+}
+.hero-inner{position:relative;z-index:1;max-width:1280px;width:100%;margin:0 auto;}
+.hero-tag{font-family:'DM Mono',monospace;font-size:.62rem;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.2rem;display:flex;align-items:center;gap:.8rem;}
+.hero-tag::before{content:'';width:28px;height:1px;background:var(--cyan);}
+.page-hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,14vw,13rem);line-height:.9;letter-spacing:.04em;color:var(--white);text-shadow:0 0 80px rgba(0,238,255,.12);margin-bottom:2rem;}
+.page-hero h1 em{font-style:normal;color:var(--cyan);}
+.hero-sub{font-size:1.05rem;font-weight:300;color:var(--muted);max-width:560px;line-height:1.8;}
+
+/* ABOUT GRID */
+.about-section{padding:100px 44px;background:var(--bg2);position:relative;z-index:1;}
+.about-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.about-photo{
+  width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center top;
+  display:block;border-radius:4px;
+  border:1px solid rgba(0,238,255,.1);
+  box-shadow:0 0 60px rgba(157,64,255,.15),0 0 120px rgba(0,238,255,.06);
+  filter:brightness(.95) saturate(1.05);
+  transition:filter .5s ease;
+}
+.about-photo:hover{filter:brightness(1) saturate(1.1);}
+.about-stats{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;}
+.stat-box{flex:1;min-width:72px;background:rgba(3,3,9,.9);border:1px solid rgba(0,238,255,.09);border-radius:2px;padding:14px 16px;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;color:var(--cyan);line-height:1;}
+.stat-lbl{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+.about-text{padding-top:1rem;}
+.about-text p{font-size:.95rem;font-weight:300;color:var(--muted);line-height:1.9;margin-bottom:1.2rem;}
+.about-text strong{color:var(--white);font-weight:500;}
+.about-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;}
+.atag{font-family:'DM Mono',monospace;font-size:.57rem;letter-spacing:.14em;text-transform:uppercase;border:1px solid;padding:4px 12px;border-radius:2px;}
+.ac{border-color:rgba(0,238,255,.28);color:var(--cyan);}
+.ap{border-color:rgba(157,64,255,.28);color:var(--purple);}
+.ak{border-color:rgba(255,42,127,.28);color:var(--pink);}
+
+/* MEMBERS */
+.members-section{padding:100px 44px;background:var(--bg);position:relative;z-index:1;}
+.members-inner{max-width:1280px;margin:0 auto;}
+.section-tag{font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;display:flex;align-items:center;gap:9px;}
+.section-tag::before{content:'';display:block;width:16px;height:1px;background:var(--cyan);}
+.section-head{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,5rem);line-height:.95;margin-bottom:56px;}
+.section-head em{font-style:normal;color:var(--cyan);}
+.members-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(239,240,255,.04);}
+.member-card{background:var(--bg2);padding:2.5rem 2rem;position:relative;overflow:hidden;transition:background .25s;}
+.member-card:hover{background:var(--bg3);}
+.member-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .4s ease;}
+.member-card:hover::before{transform:scaleX(1);}
+.member-initial{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:rgba(0,238,255,.08);line-height:1;margin-bottom:.8rem;transition:color .3s;}
+.member-card:hover .member-initial{color:rgba(0,238,255,.18);}
+.member-name{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.04em;margin-bottom:.3rem;}
+.member-role{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.2rem;}
+.member-bio{font-size:.88rem;font-weight:300;color:var(--muted);line-height:1.8;}
+
+/* CTA */
+.cta-strip{padding:80px 44px;background:var(--bg2);border-top:1px solid rgba(0,238,255,.07);text-align:center;}
+.cta-strip h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,5rem);line-height:.95;margin-bottom:1.5rem;}
+.cta-strip h2 em{font-style:normal;color:var(--cyan);}
+.cta-strip p{font-size:.95rem;color:var(--muted);max-width:460px;margin:0 auto 2.5rem;line-height:1.75;}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.btn-neon{display:inline-flex;align-items:center;gap:8px;background:var(--cyan);color:#000;font-family:'DM Mono',monospace;font-size:.65rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:.85rem 1.8rem;transition:box-shadow .2s,transform .2s;box-shadow:0 0 20px rgba(0,238,255,.3);}
+.btn-neon:hover{box-shadow:0 0 40px rgba(0,238,255,.5);transform:translateY(-2px);}
+.btn-neon svg{width:14px;height:14px;}
+.btn-border{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(0,238,255,.3);color:var(--cyan);font-family:'DM Mono',monospace;font-size:.65rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:.85rem 1.8rem;transition:border-color .2s,box-shadow .2s,transform .2s;background:none;}
+.btn-border:hover{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,238,255,.15);transform:translateY(-2px);}
+
+footer{padding:2.5rem 44px;border-top:1px solid rgba(239,240,255,.07);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.12em;color:var(--white);opacity:.4;}
+.footer-copy{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);}
+
+.rev{opacity:0;transform:translateY(28px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1);}
+.rev.on{opacity:1;transform:none;}
+.rev-l{opacity:0;transform:translateX(-28px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1);}
+.rev-l.on{opacity:1;transform:none;}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.32s}
+
+@media(max-width:900px){
+  nav{padding:0 20px;}
+  .nav-center,.nav-sp,.nav-ig{display:none;}
+  .burger{display:flex;}
+  .page-hero{padding:110px 20px 60px;min-height:auto;}
+  .about-section,.members-section,.cta-strip{padding:70px 20px;}
+  .about-inner{grid-template-columns:1fr;gap:3rem;}
+  .members-grid{grid-template-columns:1fr;}
+  footer{padding:2rem 20px;}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">STROBE</a>
+  <ul class="nav-center">
+    <li><a href="index.html#musikk">Musikk</a></li>
+    <li><a href="index.html#spor">Spor</a></li>
+    <li><a href="om.html" class="active">Om</a></li>
+    <li><a href="galleri.html">Galleri</a></li>
+    <li><a href="genser.html" style="color:var(--pink);">Merch</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="https://open.spotify.com/artist/5W717hTN8g6Ljr1kuNZqDm" target="_blank" rel="noopener" class="nav-sp">
+      <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      Spotify
+    </a>
+    <a href="https://www.instagram.com/strobe_musikk/" target="_blank" rel="noopener" class="nav-ig">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      Instagram
+    </a>
+    <button class="burger" id="burger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mob-nav" id="mob-nav">
+  <a href="index.html#musikk">Musikk</a>
+  <a href="index.html#spor">Spor</a>
+  <a href="om.html" style="color:var(--cyan);">Om</a>
+  <a href="galleri.html">Galleri</a>
+  <a href="genser.html" style="color:var(--pink);">Merch</a>
+  <a href="https://open.spotify.com/artist/5W717hTN8g6Ljr1kuNZqDm" target="_blank" style="color:#1DB954;">Spotify</a>
+  <a href="https://www.instagram.com/strobe_musikk/" target="_blank" style="color:var(--pink);">Instagram</a>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="hero-orb hero-orb1"></div>
+  <div class="hero-orb hero-orb2"></div>
+  <div class="hero-bg-letter">S</div>
+  <div class="hero-inner">
+    <div class="hero-tag">Hvem er vi</div>
+    <h1>HV<em>E</em>M<br/>ER<br/>STROBE?</h1>
+    <p class="hero-sub">Et norsk artistkollektiv som skaper musikk mellom lys og skygge — mellom det sårbare og det energiske.</p>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about-section">
+  <div class="about-inner">
+    <div class="rev-l">
+      <img src="./strobe-photo.jpg" alt="Strobe — artistkollektiv" class="about-photo"/>
+      <div class="about-stats">
+        <div class="stat-box"><div class="stat-num">3</div><div class="stat-lbl">Artister</div></div>
+        <div class="stat-box"><div class="stat-num">67</div><div class="stat-lbl">Månedlige lyttere</div></div>
+        <div class="stat-box"><div class="stat-num">6+</div><div class="stat-lbl">Utgivelser</div></div>
+        <div class="stat-box"><div class="stat-num">2026</div><div class="stat-lbl">BAD — siste</div></div>
+      </div>
+    </div>
+    <div class="about-text rev d1">
+      <p>Strobe er et norsk artistkollektiv bestående av tre artister. Sammen skaper de musikk som beveger seg mellom lys og skygge, mellom det sårbare og det energiske.</p>
+      <p>Fra den intime <strong>«Finnes det noen»</strong> til den pulserende energien i <strong>«IKKE TILGJENGELIG»</strong> — de tre skaper soniske verdener som sitter igjen lenge etter at musikken stopper.</p>
+      <p><strong>Aurora EP (2025)</strong> markerer et nytt kapittel for trioen: klarere lyder, dypere tekster og tre stemmer som virkelig har funnet sin felles lyd.</p>
+      <p>I 2026 fortsetter Strobe å presse grenser med singelen <strong>«BAD»</strong> — en modig og rå utgivelse som viser at bandet ikke er redd for å gå nye steder.</p>
+      <div class="about-tags">
+        <span class="atag ac">Norsk</span>
+        <span class="atag ap">Indie</span>
+        <span class="atag ak">Pop</span>
+        <span class="atag ac">Alternativ</span>
+        <span class="atag ap">R&amp;B</span>
+        <span class="atag ak">Elektronisk</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERS -->
+<section class="members-section">
+  <div class="members-inner">
+    <div class="section-tag rev">Artistene</div>
+    <h2 class="section-head rev d1">Møt <em>trioen</em></h2>
+    <div class="members-grid">
+      <div class="member-card rev">
+        <div class="member-initial">E</div>
+        <div class="member-name">Erlend Grande</div>
+        <div class="member-role">Artist · Vokalist</div>
+        <p class="member-bio">Erlend er hjerte og stemme i Strobe. Med en vokal som like gjerne hviler i stillhet som sprenger seg frem, bringer han en sårbarhet og nærvær til musikken som er vanskelig å kopiere.</p>
+      </div>
+      <div class="member-card rev d1">
+        <div class="member-initial">S</div>
+        <div class="member-name">Strobe</div>
+        <div class="member-role">Artist · Produksjon</div>
+        <p class="member-bio">Lydarkitekten i gruppen. Med en forkjærlighet for det uventede og det teksturerte bygger han lydverdener som balanserer mellom det intime og det ekspansive.</p>
+      </div>
+      <div class="member-card rev d2">
+        <div class="member-initial">S</div>
+        <div class="member-name">Strobe</div>
+        <div class="member-role">Artist · Kreativ</div>
+        <p class="member-bio">Den kreative katalysatoren. Bringer energi, konsept og visuell identitet til det Strobe er — og skyver alltid bandet mot noe de ikke visste de kunne bli.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <h2>Lytt til <em>Strobe</em></h2>
+  <p>Finn oss på Spotify og følg reisen videre.</p>
+  <div class="cta-btns">
+    <a href="https://open.spotify.com/artist/5W717hTN8g6Ljr1kuNZqDm" target="_blank" rel="noopener" class="btn-neon">
+      <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      Stream på Spotify
+    </a>
+    <a href="https://www.instagram.com/strobe_musikk/" target="_blank" rel="noopener" class="btn-border">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      Følg på Instagram
+    </a>
+    <a href="galleri.html" class="btn-border">Se galleri →</a>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-logo">STROBE</span>
+  <span class="footer-copy">© 2026 Strobe · Alle rettigheter forbeholdt</span>
+</footer>
+
+<script>
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';});
+document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('is-hovering'));el.addEventListener('mouseleave',()=>document.body.classList.remove('is-hovering'));});
+document.getElementById('burger').addEventListener('click',function(){this.classList.toggle('open');document.getElementById('mob-nav').classList.toggle('open');});
+document.querySelectorAll('.mob-nav a').forEach(a=>a.addEventListener('click',()=>{document.getElementById('burger').classList.remove('open');document.getElementById('mob-nav').classList.remove('open');}));
+const ro=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.1});
+document.querySelectorAll('.rev,.rev-l').forEach(el=>ro.observe(el));
+</script>
+</body>
+</html>
