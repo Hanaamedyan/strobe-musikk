@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-:root{--bg:#030309;--bg2:#07071C;--bg3:#0D0D28;--cyan:#00EEFF;--pink:#FF2A7F;--purple:#9D40FF;--white:#EFF0FF;--muted:rgba(239,240,255,.75);--dim:rgba(239,240,255,.42);}
+:root{--bg:#030309;--bg2:#07071C;--bg3:#0D0D28;--cyan:#00EEFF;--pink:#FF2A7F;--purple:#9D40FF;--white:#EFF0FF;--muted:rgba(239,240,255,.90);--dim:rgba(239,240,255,.42);}
 html{scroll-behavior:smooth;}
 body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
 a{text-decoration:none;color:inherit;}
@@ -66,7 +66,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;height:62px;display:flex;ali
 .hero-tag::before{content:'';width:28px;height:1px;background:var(--cyan);}
 .page-hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,14vw,13rem);line-height:.9;letter-spacing:.04em;color:var(--white);text-shadow:0 0 80px rgba(0,238,255,.12);margin-bottom:2rem;}
 .page-hero h1 em{font-style:normal;color:var(--cyan);}
-.hero-sub{font-size:1.05rem;font-weight:300;color:var(--muted);max-width:560px;line-height:1.8;}
+.hero-sub{font-size:1.05rem;color:var(--muted);max-width:560px;line-height:1.8;}
 
 /* ABOUT GRID */
 .about-section{padding:100px 44px;background:var(--bg2);position:relative;z-index:1;}
@@ -85,7 +85,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;height:62px;display:flex;ali
 .stat-num{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;color:var(--cyan);line-height:1;}
 .stat-lbl{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
 .about-text{padding-top:1rem;}
-.about-text p{font-size:.95rem;font-weight:300;color:var(--muted);line-height:1.9;margin-bottom:1.2rem;}
+.about-text p{font-size:.95rem;color:var(--muted);line-height:1.9;margin-bottom:1.2rem;}
 .about-text strong{color:var(--white);font-weight:500;}
 .about-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;}
 .atag{font-family:'DM Mono',monospace;font-size:.57rem;letter-spacing:.14em;text-transform:uppercase;border:1px solid;padding:4px 12px;border-radius:2px;}
@@ -109,7 +109,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;height:62px;display:flex;ali
 .member-card:hover .member-initial{color:rgba(0,238,255,.18);}
 .member-name{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.04em;margin-bottom:.3rem;}
 .member-role{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.2rem;}
-.member-bio{font-size:.88rem;font-weight:300;color:var(--muted);line-height:1.8;}
+.member-bio{font-size:.88rem;color:var(--muted);line-height:1.8;}
 
 /* CTA */
 .cta-strip{padding:80px 44px;background:var(--bg2);border-top:1px solid rgba(0,238,255,.07);text-align:center;}
