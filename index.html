@@ -567,39 +567,13 @@ nav.solid{
   transform:translateY(-2px);
 }
 .mc-btn-pink svg{width:14px;height:14px;}
-/* "3D" visual on right side — animated rotating square that hints at the 3D viewer */
+/* 3D sweater preview canvas */
 .mc-visual{
   position:relative;aspect-ratio:1;max-width:300px;margin:0 auto;
-  display:flex;align-items:center;justify-content:center;perspective:600px;
 }
-.mc-cube{
-  width:60%;height:60%;position:relative;
-  transform-style:preserve-3d;
-  animation:mcSpin 9s linear infinite;
+#merch-preview-canvas{
+  position:absolute;inset:0;width:100%;height:100%;display:block;
 }
-@keyframes mcSpin{from{transform:rotateY(0)}to{transform:rotateY(360deg)}}
-.mc-face{
-  position:absolute;inset:0;
-  border:1px solid rgba(255,42,127,.4);
-  background:linear-gradient(135deg,rgba(255,42,127,.10),rgba(157,64,255,.06));
-  box-shadow:inset 0 0 40px rgba(255,42,127,.12),0 0 30px rgba(255,42,127,.18);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.08em;
-  color:rgba(239,240,255,.4);text-shadow:0 0 18px rgba(255,42,127,.5);
-}
-.mc-face.front{transform:translateZ(70px);}
-.mc-face.back{transform:rotateY(180deg) translateZ(70px);}
-.mc-face.left{transform:rotateY(-90deg) translateZ(70px);}
-.mc-face.right{transform:rotateY(90deg) translateZ(70px);}
-.mc-orbit{
-  position:absolute;inset:-5%;border:1px dashed rgba(255,42,127,.18);
-  border-radius:50%;animation:mcOrbit 14s linear infinite;
-}
-.mc-orbit::before{
-  content:'';position:absolute;top:50%;left:0;width:6px;height:6px;border-radius:50%;
-  background:var(--pink);box-shadow:0 0 14px var(--pink);transform:translate(-50%,-50%);
-}
-@keyframes mcOrbit{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @media(max-width:768px){
   .merch-cta{padding:72px 18px;}
   .merch-cta-inner{grid-template-columns:1fr;gap:32px;text-align:center;}
@@ -891,13 +865,7 @@ footer{
       </a>
     </div>
     <div class="mc-visual rev d2">
-      <div class="mc-orbit"></div>
-      <div class="mc-cube">
-        <div class="mc-face front">STROBE</div>
-        <div class="mc-face back">STROBE</div>
-        <div class="mc-face left">3D</div>
-        <div class="mc-face right">3D</div>
-      </div>
+      <canvas id="merch-preview-canvas"></canvas>
     </div>
   </div>
 </div>
@@ -1071,6 +1039,84 @@ as.addEventListener('mouseleave', () => { down=false; as.classList.remove('dragg
 as.addEventListener('mouseup', () => { down=false; as.classList.remove('dragging'); });
 as.addEventListener('mousemove', e => { if(!down) return; e.preventDefault(); as.scrollLeft = sl - (e.pageX - as.offsetLeft - sx) * 2; });
 </script>
+<!-- ━━━━━ Three.js — Merch preview sweater ━━━━━ -->
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+const canvas = document.getElementById('merch-preview-canvas');
+const wrap = canvas?.parentElement;
+if (!canvas || !wrap) return;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
+camera.position.set(0, 0.05, 5.2);
+
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+function resize() {
+  const w = wrap.clientWidth || 280;
+  const h = wrap.clientHeight || 280;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', resize);
+setTimeout(resize, 100);
+setTimeout(resize, 500);
+window.addEventListener('load', resize);
+resize();
+
+const loader = new THREE.TextureLoader();
+function loadTex(url) {
+  const t = loader.load(url);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  return t;
+}
+
+const texFront = loadTex('genser-front.png');
+const texBack  = loadTex('genser-back.png');
+
+const planeGeo = new THREE.PlaneGeometry(2.1, 2.39);
+const matFront = new THREE.MeshBasicMaterial({ map: texFront, transparent: true, alphaTest: 0.05, side: THREE.FrontSide });
+const matBack  = new THREE.MeshBasicMaterial({ map: texBack,  transparent: true, alphaTest: 0.05, side: THREE.FrontSide });
+
+const frontPlane = new THREE.Mesh(planeGeo, matFront);
+frontPlane.position.z = 0.006;
+const backPlane = new THREE.Mesh(planeGeo, matBack);
+backPlane.rotation.y = Math.PI;
+backPlane.position.z = -0.006;
+
+const box = new THREE.Group();
+box.add(frontPlane, backPlane);
+
+const glowMat = new THREE.MeshBasicMaterial({
+  color: 0xFF2A7F, transparent: true, opacity: 0.07,
+  blending: THREE.AdditiveBlending, depthWrite: false
+});
+const glow = new THREE.Mesh(new THREE.BoxGeometry(2.24, 2.55, 0.32), glowMat);
+
+const sweaterGroup = new THREE.Group();
+sweaterGroup.add(box, glow);
+sweaterGroup.rotation.x = -0.06;
+scene.add(sweaterGroup);
+
+const clock = new THREE.Clock();
+(function tick() {
+  requestAnimationFrame(tick);
+  const t = clock.getElapsedTime();
+  sweaterGroup.rotation.y += 0.004;
+  sweaterGroup.position.y = Math.sin(t * 0.9) * 0.025;
+  glow.material.opacity = 0.04 + 0.03 * (0.5 + 0.5 * Math.sin(t * 1.2));
+  renderer.render(scene, camera);
+})();
+</script>
+
 <!-- ━━━━━ AuroraWaves shader (OGL — vanilla, no React) ━━━━━ -->
 <script type="module">
 import { Renderer, Program, Mesh, Triangle, Vec2 } from 'https://cdn.jsdelivr.net/npm/ogl@1.0.10/+esm';
