@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Galleri — STROBE</title>
+<meta name="description" content="Foto og visuals fra STROBE — livebilder, studio og mer."/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#030309;--bg2:#07071C;--bg3:#0D0D28;
+  --cyan:#00EEFF;--pink:#FF2A7F;--purple:#9D40FF;
+  --white:#EFF0FF;--muted:rgba(239,240,255,.45);--dim:rgba(239,240,255,.18);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+::-webkit-scrollbar{width:2px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--cyan);}
+
+/* CURSOR */
+#cur{width:10px;height:10px;background:var(--cyan);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .15s,height .15s,background .2s;mix-blend-mode:screen;}
+#cur-ring{width:34px;height:34px;border:1.5px solid rgba(0,238,255,.35);border-radius:50%;position:fixed;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:left .09s ease,top .09s ease;}
+.is-hovering #cur{width:16px;height:16px;background:var(--pink);}
+.is-hovering #cur-ring{width:52px;height:52px;border-color:rgba(255,42,127,.3);}
+
+/* SCANLINES + GRAIN */
+body::before{content:'';position:fixed;inset:0;z-index:9995;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 4px);}
+body::after{content:'';position:fixed;inset:0;z-index:9994;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 44px;background:rgba(3,3,9,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,238,255,.07);}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.12em;color:var(--white);text-shadow:0 0 18px rgba(0,238,255,.45);}
+.nav-center{display:flex;gap:2rem;list-style:none;}
+.nav-center a{font-family:'DM Mono',monospace;font-size:.65rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);transition:color .2s;}
+.nav-center a:hover,.nav-center a.active{color:var(--cyan);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-sp{display:inline-flex;align-items:center;gap:7px;background:#1DB954;color:#000;font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:.5rem 1.1rem;border-radius:20px;transition:background .2s,transform .2s;box-shadow:0 0 16px rgba(29,185,84,.25);}
+.nav-sp:hover{background:#1ed760;transform:translateY(-1px);}
+.nav-sp svg{width:13px;height:13px;}
+.nav-ig{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(239,240,255,.15);color:var(--muted);font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:.5rem 1.1rem;border-radius:20px;transition:border-color .2s,color .2s,transform .2s;}
+.nav-ig:hover{border-color:rgba(239,240,255,.4);color:var(--white);transform:translateY(-1px);}
+.nav-ig svg{width:13px;height:13px;}
+.burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;}
+.burger span{display:block;width:19px;height:1px;background:var(--white);transition:all .3s;}
+.burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.burger.open span:nth-child(2){opacity:0;}
+.burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+.mob-nav{display:none;position:fixed;inset:0;background:rgba(3,3,9,.98);z-index:499;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-top:2px solid var(--cyan);}
+.mob-nav.open{display:flex;}
+.mob-nav a{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:rgba(239,240,255,.45);letter-spacing:.1em;transition:color .2s;}
+.mob-nav a:hover{color:var(--cyan);}
+
+/* HERO */
+.page-hero{
+  padding: 140px 44px 60px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(0,238,255,.07);
+}
+.page-hero::before{
+  content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);
+  width:700px;height:700px;
+  background:radial-gradient(circle,rgba(0,238,255,.08) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  font-family:'DM Mono',monospace;font-size:.62rem;font-weight:500;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--cyan);
+  margin-bottom:1.2rem;display:flex;align-items:center;gap:.8rem;
+}
+.hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--cyan);}
+.page-hero h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(5rem,12vw,10rem);
+  line-height:.9;letter-spacing:.04em;color:var(--white);
+  text-shadow:0 0 60px rgba(0,238,255,.15);
+  margin-bottom:1.5rem;
+}
+.page-hero h1 span{color:var(--cyan);}
+.page-hero p{
+  font-size:1rem;color:var(--muted);max-width:520px;line-height:1.75;
+}
+
+/* FILTER TABS */
+.filter-bar{
+  padding:2rem 44px;
+  display:flex;gap:.6rem;flex-wrap:wrap;
+  border-bottom:1px solid rgba(239,240,255,.05);
+  position:sticky;top:62px;z-index:10;
+  background:rgba(3,3,9,.95);backdrop-filter:blur(12px);
+}
+.filter-btn{
+  font-family:'DM Mono',monospace;font-size:.58rem;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;
+  padding:.45rem 1rem;border-radius:20px;border:1px solid var(--dim);
+  background:none;color:var(--muted);cursor:pointer;
+  transition:all .2s;
+}
+.filter-btn:hover{color:var(--white);border-color:rgba(239,240,255,.3);}
+.filter-btn.active{background:var(--cyan);color:#000;border-color:var(--cyan);box-shadow:0 0 14px rgba(0,238,255,.35);}
+
+/* MASONRY GRID */
+.gallery-section{padding:3rem 44px 6rem;}
+.masonry{
+  columns:3;column-gap:12px;
+}
+.gallery-item{
+  break-inside:avoid;
+  margin-bottom:12px;
+  position:relative;overflow:hidden;
+  cursor:pointer;
+  border:1px solid rgba(239,240,255,.06);
+}
+.gallery-item img{
+  width:100%;display:block;
+  transition:transform .5s cubic-bezier(.25,1,.5,1),filter .4s;
+  filter:brightness(.85) saturate(.9);
+}
+.gallery-item:hover img{transform:scale(1.05);filter:brightness(1) saturate(1.1);}
+.gallery-item .overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(3,3,9,.7) 0%,transparent 50%);
+  opacity:0;transition:opacity .3s;
+  display:flex;align-items:flex-end;padding:1.2rem;
+}
+.gallery-item:hover .overlay{opacity:1;}
+.overlay-tag{
+  font-family:'DM Mono',monospace;font-size:.55rem;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--cyan);border:1px solid rgba(0,238,255,.3);
+  padding:3px 8px;border-radius:20px;backdrop-filter:blur(4px);
+}
+
+/* LIGHTBOX */
+#lightbox{
+  display:none;position:fixed;inset:0;z-index:9000;
+  background:rgba(3,3,9,.96);backdrop-filter:blur(20px);
+  align-items:center;justify-content:center;
+}
+#lightbox.open{display:flex;}
+#lightbox img{
+  max-width:90vw;max-height:85vh;object-fit:contain;
+  border:1px solid rgba(239,240,255,.1);
+}
+#lb-close{
+  position:absolute;top:1.5rem;right:1.5rem;
+  background:none;border:1px solid var(--dim);color:var(--white);
+  font-size:1.3rem;width:44px;height:44px;border-radius:50%;
+  cursor:pointer;transition:border-color .2s,color .2s;
+  display:flex;align-items:center;justify-content:center;
+}
+#lb-close:hover{border-color:var(--pink);color:var(--pink);}
+#lb-prev,#lb-next{
+  position:absolute;top:50%;transform:translateY(-50%);
+  background:none;border:1px solid var(--dim);color:var(--white);
+  width:48px;height:48px;border-radius:50%;
+  cursor:pointer;font-size:1.2rem;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;
+}
+#lb-prev{left:1.5rem;}#lb-next{right:1.5rem;}
+#lb-prev:hover,#lb-next:hover{border-color:var(--cyan);color:var(--cyan);}
+#lb-caption{
+  position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);
+  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);
+}
+
+/* FOOTER */
+footer{
+  padding:2.5rem 44px;
+  border-top:1px solid rgba(239,240,255,.07);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.12em;color:var(--white);opacity:.4;}
+.footer-copy{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);}
+
+/* REVEAL */
+.rev{opacity:0;transform:translateY(20px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
+.rev.on{opacity:1;transform:none;}
+
+@media(max-width:900px){
+  nav{padding:0 20px;}
+  .nav-center,.nav-sp,.nav-ig{display:none;}
+  .burger{display:flex;}
+  .page-hero{padding:110px 20px 50px;}
+  .filter-bar{padding:1.5rem 20px;}
+  .gallery-section{padding:2rem 20px 4rem;}
+  .masonry{columns:2;}
+  footer{padding:2rem 20px;}
+}
+@media(max-width:520px){
+  .masonry{columns:1;}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">STROBE</a>
+  <ul class="nav-center">
+    <li><a href="index.html#musikk">Musikk</a></li>
+    <li><a href="index.html#spor">Spor</a></li>
+    <li><a href="index.html#om">Om</a></li>
+    <li><a href="galleri.html" class="active">Galleri</a></li>
+    <li><a href="genser.html" style="color:var(--pink);">Merch</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="https://open.spotify.com/artist/5W717hTN8g6Ljr1kuNZqDm" target="_blank" rel="noopener" class="nav-sp">
+      <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      Spotify
+    </a>
+    <a href="https://www.instagram.com/strobe_musikk/" target="_blank" rel="noopener" class="nav-ig">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      Instagram
+    </a>
+    <button class="burger" id="burger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mob-nav" id="mob-nav">
+  <a href="index.html#musikk">Musikk</a>
+  <a href="index.html#spor">Spor</a>
+  <a href="index.html#om">Om</a>
+  <a href="galleri.html" style="color:var(--cyan);">Galleri</a>
+  <a href="genser.html" style="color:var(--pink);">Merch</a>
+  <a href="https://open.spotify.com/artist/5W717hTN8g6Ljr1kuNZqDm" target="_blank" style="color:#1DB954;">Spotify</a>
+  <a href="https://www.instagram.com/strobe_musikk/" target="_blank" style="color:var(--pink);">Instagram</a>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="hero-eyebrow">Foto & visuals</div>
+  <h1>GALL<span>E</span>RI</h1>
+  <p>Et visuelt arkiv av STROBE — live, studio og bak kulissene.</p>
+</div>
+
+<!-- FILTER -->
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="all">Alle</button>
+  <button class="filter-btn" data-filter="live">Live</button>
+  <button class="filter-btn" data-filter="studio">Studio</button>
+  <button class="filter-btn" data-filter="bts">Bak kulissene</button>
+  <button class="filter-btn" data-filter="visuals">Visuals</button>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery-section">
+  <div class="masonry" id="masonry">
+
+    <!-- Live -->
+    <div class="gallery-item rev" data-cat="live">
+      <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800&q=80" alt="Live — scene" loading="lazy"/>
+      <div class="overlay"><span class="overlay-tag">Live</span></div>
+    </div>
+
+    <div class="gallery-item rev" data-cat="studio">
+      <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&q=80" alt="Studio" loading="lazy"/>
+      <div class="overlay"><span class="overlay-tag">Studio</span></div>
+    </div>
+
+    <div class="gallery-item rev" data-cat="live">
+      <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=800&q=80" alt="Live — crowd" loading="lazy"/>
+      <div class="overlay"><span class="overlay-tag">Live</span></div>
+    </div>
+
+    <div class="gallery-item rev" data-cat="visuals">
+      <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80" alt="Visuals" loading="lazy"/>
+      <div class="overlay"><span class="overlay-tag">Visuals</span></div>
+    </div>
+
+    <div class="gallery-item rev" data-cat="bts">
+      <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800&q=80" alt="Bak kulissene" loading="lazy"/>
+      <div class="overlay"><span class="overlay-tag">Bak kulissene</span></div>
+    </div>
+
+    <div class="gallery-item rev" data-cat="live">
+      <img src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=800&q=80" alt="Live — lys" loading="lazy"/>
+      <div class="overlay"><span class="overlay-tag">Live</span></div>
+    </div>
+
+    <div class="gallery-item rev" data-cat="studio">
+      <img src="https://images.unsplash.com/photo-1581368087049-7034ed0d1e6f?w=800&q=80" alt="Studio — mic" loading="lazy"/>
+      <div class="overlay"><span class="overlay-tag">Studio</span></div>
+    </div>
+
+    <div class="gallery-item rev" data-cat="visuals">
+      <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80" alt="Visuals — konsert" loading="lazy"/>
+      <div class="overlay"><span class="overlay-tag">Visuals</span></div>
+    </div>
+
+    <div class="gallery-item rev" data-cat="bts">
+      <img src="https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?w=800&q=80" alt="Bak kulissene — studio" loading="lazy"/>
+      <div class="overlay"><span class="overlay-tag">Bak kulissene</span></div>
+    </div>
+
+    <div class="gallery-item rev" data-cat="live">
+      <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&q=80" alt="Live — scene lys" loading="lazy"/>
+      <div class="overlay"><span class="overlay-tag">Live</span></div>
+    </div>
+
+    <div class="gallery-item rev" data-cat="studio">
+      <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=800&q=80" alt="Studio — keys" loading="lazy"/>
+      <div class="overlay"><span class="overlay-tag">Studio</span></div>
+    </div>
+
+    <div class="gallery-item rev" data-cat="visuals">
+      <img src="https://images.unsplash.com/photo-1549213783-8284d0336c4f?w=800&q=80" alt="Visuals — lys" loading="lazy"/>
+      <div class="overlay"><span class="overlay-tag">Visuals</span></div>
+    </div>
+
+    <div class="gallery-item rev" data-cat="live">
+      <img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=800&q=80" alt="Live — publikum" loading="lazy"/>
+      <div class="overlay"><span class="overlay-tag">Live</span></div>
+    </div>
+
+    <div class="gallery-item rev" data-cat="bts">
+      <img src="https://images.unsplash.com/photo-1547586696-ea22b4d4235d?w=800&q=80" alt="Bak kulissene — utstyr" loading="lazy"/>
+      <div class="overlay"><span class="overlay-tag">Bak kulissene</span></div>
+    </div>
+
+    <div class="gallery-item rev" data-cat="studio">
+      <img src="https://images.unsplash.com/photo-1574169208507-84376144848b?w=800&q=80" alt="Studio — mixing" loading="lazy"/>
+      <div class="overlay"><span class="overlay-tag">Studio</span></div>
+    </div>
+
+    <div class="gallery-item rev" data-cat="live">
+      <img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?w=800&q=80" alt="Live — energi" loading="lazy"/>
+      <div class="overlay"><span class="overlay-tag">Live</span></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <button id="lb-close">✕</button>
+  <button id="lb-prev">‹</button>
+  <img id="lb-img" src="" alt=""/>
+  <button id="lb-next">›</button>
+  <div id="lb-caption"></div>
+</div>
+
+<footer>
+  <span class="footer-logo">STROBE</span>
+  <span class="footer-copy">© 2026 Strobe · Alle rettigheter forbeholdt</span>
+</footer>
+
+<script>
+// Cursor
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';});
+document.querySelectorAll('a,button,.gallery-item').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('is-hovering'));el.addEventListener('mouseleave',()=>document.body.classList.remove('is-hovering'));});
+
+// Burger
+document.getElementById('burger').addEventListener('click',function(){this.classList.toggle('open');document.getElementById('mob-nav').classList.toggle('open');});
+document.querySelectorAll('.mob-nav a').forEach(a=>a.addEventListener('click',()=>{document.getElementById('burger').classList.remove('open');document.getElementById('mob-nav').classList.remove('open');}));
+
+// Scroll reveal
+const ro=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.1});
+document.querySelectorAll('.rev').forEach(el=>ro.observe(el));
+
+// Filter
+const items=[...document.querySelectorAll('.gallery-item')];
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    items.forEach(item=>{
+      const show=f==='all'||item.dataset.cat===f;
+      item.style.display=show?'':'none';
+    });
+  });
+});
+
+// Lightbox
+const visibleItems=()=>items.filter(i=>i.style.display!=='none');
+let lbIndex=0;
+const lb=document.getElementById('lightbox');
+const lbImg=document.getElementById('lb-img');
+const lbCap=document.getElementById('lb-caption');
+
+function openLb(index){
+  const v=visibleItems();
+  lbIndex=index;
+  const img=v[lbIndex].querySelector('img');
+  lbImg.src=img.src;
+  lbCap.textContent=v[lbIndex].querySelector('.overlay-tag').textContent+' · '+(lbIndex+1)+' / '+v.length;
+  lb.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLb(){lb.classList.remove('open');document.body.style.overflow='';}
+function moveLb(dir){
+  const v=visibleItems();
+  lbIndex=(lbIndex+dir+v.length)%v.length;
+  const img=v[lbIndex].querySelector('img');
+  lbImg.src=img.src;
+  lbCap.textContent=v[lbIndex].querySelector('.overlay-tag').textContent+' · '+(lbIndex+1)+' / '+v.length;
+}
+
+items.forEach((item,i)=>item.addEventListener('click',()=>openLb(items.indexOf(item))));
+document.getElementById('lb-close').addEventListener('click',closeLb);
+document.getElementById('lb-prev').addEventListener('click',()=>moveLb(-1));
+document.getElementById('lb-next').addEventListener('click',()=>moveLb(1));
+lb.addEventListener('click',e=>{if(e.target===lb)closeLb();});
+document.addEventListener('keydown',e=>{if(!lb.classList.contains('open'))return;if(e.key==='Escape')closeLb();if(e.key==='ArrowLeft')moveLb(-1);if(e.key==='ArrowRight')moveLb(1);});
+</script>
+</body>
+</html>
