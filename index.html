@@ -660,6 +660,10 @@ footer{
   #cur,#cur-ring{display:none;}
   body{cursor:auto;}
 }
+@media(hover:none),(pointer:coarse){
+  #cur,#cur-ring{display:none!important;}
+  body{cursor:auto!important;}
+}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important;}}
 </style>
 </head>
@@ -925,19 +929,21 @@ footer{
 </footer>
 
 <script>
-/* CURSOR */
-const cur = document.getElementById('cur');
-const ring = document.getElementById('cur-ring');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cur.style.left = mx + 'px'; cur.style.top = my + 'px';
-});
-(function loop() { rx += (mx-rx)*.1; ry += (my-ry)*.1; ring.style.left = rx+'px'; ring.style.top = ry+'px'; requestAnimationFrame(loop); })();
-document.querySelectorAll('a,button').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('is-hovering'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('is-hovering'));
-});
+/* CURSOR — desktop only */
+if (window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
+  const cur = document.getElementById('cur');
+  const ring = document.getElementById('cur-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+  });
+  (function loop() { rx += (mx-rx)*.1; ry += (my-ry)*.1; ring.style.left = rx+'px'; ring.style.top = ry+'px'; requestAnimationFrame(loop); })();
+  document.querySelectorAll('a,button').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('is-hovering'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('is-hovering'));
+  });
+}
 
 /* CANVAS PARTICLES */
 (function() {
