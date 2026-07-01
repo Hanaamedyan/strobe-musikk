@@ -612,25 +612,26 @@ nav.solid{
 .stream-cta{
   text-align:center;position:relative;
   padding:96px 44px;z-index:1;overflow:hidden;
-  background:var(--bg2);
+  background:var(--bg);
   border-top:1px solid rgba(0,238,255,.08);
   border-bottom:1px solid rgba(0,238,255,.08);
 }
-.stream-cta::after{
-  content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:700px;height:700px;
-  background:radial-gradient(circle,rgba(0,238,255,.12) 0%,transparent 65%);
-  pointer-events:none;z-index:0;
+.stream-aurora{
+  position:absolute;inset:0;width:100%;height:100%;
+  display:block;pointer-events:none;z-index:0;
+  mask-image:radial-gradient(ellipse 90% 80% at 50% 50%,#000 30%,transparent 85%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 80% at 50% 50%,#000 30%,transparent 85%);
+  opacity:.85;
 }
 .stream-cta::before{
   content:'STREAM';
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
   font-family:'Bebas Neue',sans-serif;
   font-size:clamp(80px,18vw,220px);
-  color:rgba(0,238,255,.07);line-height:1;
-  white-space:nowrap;pointer-events:none;letter-spacing:-.02em;z-index:0;
+  color:rgba(0,238,255,.06);line-height:1;
+  white-space:nowrap;pointer-events:none;letter-spacing:-.02em;z-index:1;
 }
-.stream-cta-inner{position:relative;z-index:1;}
+.stream-cta-inner{position:relative;z-index:2;}
 .sc-tag{
   font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.22em;
   text-transform:uppercase;color:var(--pink);margin-bottom:14px;display:block;
@@ -903,6 +904,7 @@ footer{
 
 <!-- STREAM CTA -->
 <div class="stream-cta">
+  <canvas class="stream-aurora" id="stream-aurora-canvas"></canvas>
   <div class="stream-cta-inner">
     <span class="sc-tag rev">— Lytt nå</span>
     <h2 class="sc-title rev d1">Stream<br/>Strobe.</h2>
@@ -1073,15 +1075,14 @@ as.addEventListener('mousemove', e => { if(!down) return; e.preventDefault(); as
 <script type="module">
 import { Renderer, Program, Mesh, Triangle, Vec2 } from 'https://cdn.jsdelivr.net/npm/ogl@1.0.10/+esm';
 
-const canvas = document.getElementById('aurora-canvas');
-const parent = canvas ? canvas.parentElement : null;
+function initAurora(canvasId, speed = 1.0, glow = 15.0) {
+  const canvas = document.getElementById(canvasId);
+  const parent = canvas ? canvas.parentElement : null;
+  if (!canvas || !parent) return;
 
-if (canvas && parent) {
-
-  // Config — equivalent to the React component defaults
-  const SPEED            = 1.0;
-  const GLOW             = 15.0;
-  const THEME            = 0.0;  // 0 = dark, 1 = light
+  const SPEED            = speed;
+  const GLOW             = glow;
+  const THEME            = 0.0;
   const RESOLUTION_SCALE = 1.0;
 
   const vertex = `
@@ -1173,6 +1174,9 @@ if (canvas && parent) {
     requestAnimationFrame(loop);
   })();
 }
+
+initAurora('aurora-canvas', 1.0, 15.0);
+initAurora('stream-aurora-canvas', 0.8, 12.0);
 </script>
 </body>
 </html>
