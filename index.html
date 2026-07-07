@@ -657,16 +657,67 @@ footer{
 /* RESPONSIVE */
 @media(max-width:900px){.om-grid{grid-template-columns:1fr;}.top-track{grid-template-columns:1fr;}}
 @media(max-width:768px){
+  /* Nav */
   nav{padding:0 18px;}
   .nav-center,.nav-sp,.nav-ig{display:none;}
   .burger{display:flex;}
-  .hero{padding:0 18px 60px;}
-  .sek{padding:72px 18px;}
-  .ig-section{padding:64px 18px;}
-  .stream-cta{padding:72px 18px;}
+
+  /* Hero */
+  .hero{padding:0 18px 52px;min-height:100dvh;}
+  .hero-title{font-size:clamp(64px,20vw,110px);}
+  .hero-eyebrow{font-size:.55rem;}
+  .hero-bottom{flex-direction:column;gap:20px;align-items:flex-start;}
+  .hero-desc{font-size:.85rem;line-height:1.75;max-width:100%;}
+  .hero-ctas{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;}
+  .hero-ctas a{justify-content:center;font-size:.58rem;padding:.65rem .8rem;}
+  .hero-scroll-ind{display:none;}
+
+  /* Sections */
+  .sek{padding:56px 18px;}
+
+  /* Top track */
+  .tt-title{font-size:clamp(28px,9vw,48px);}
+  .top-track{padding:28px 20px;gap:20px;}
+
+  /* Album scroll */
+  .album-card{flex:0 0 150px;}
+  .album-scroll{margin-top:28px;}
+
+  /* Merch CTA */
+  .merch-cta{padding:64px 18px;}
+  .merch-cta-inner{grid-template-columns:1fr;gap:28px;text-align:center;}
+  .merch-cta-text{align-items:center;}
+  .mc-sub{margin-left:auto;margin-right:auto;}
+  .mc-title{font-size:clamp(44px,13vw,80px);}
+  .mc-visual{width:220px;height:220px;}
+  #merch-preview-canvas{width:220px;height:220px;}
+
+  /* IG section */
+  .ig-section{padding:56px 18px;}
+  .ig-head{font-size:clamp(34px,10vw,56px);}
+
+  /* Stream CTA */
+  .stream-cta{padding:56px 18px;}
+  .sc-title{font-size:clamp(44px,13vw,80px);}
+  .sc-btns{flex-direction:column;align-items:center;}
+  .sc-btns a{width:100%;justify-content:center;}
+
+  /* Footer */
   footer{padding:36px 18px 22px;}
+  .ft-top{flex-direction:column;gap:20px;}
+  .ft-links{flex-wrap:wrap;gap:12px 18px;}
+  .ft-bottom{flex-direction:column;align-items:flex-start;gap:12px;}
+
+  /* Cursor */
   #cur,#cur-ring{display:none;}
   body{cursor:auto;}
+}
+@media(max-width:480px){
+  .hero-ctas{grid-template-columns:1fr 1fr;}
+  .hero-ctas a{font-size:.55rem;padding:.6rem .6rem;}
+  .album-card{flex:0 0 135px;}
+  .mc-visual{width:180px;height:180px;}
+  #merch-preview-canvas{width:180px;height:180px;}
 }
 @media(hover:none),(pointer:coarse){
   #cur,#cur-ring{display:none!important;}
