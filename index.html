@@ -580,7 +580,7 @@ nav.solid{
   position:relative;width:300px;height:300px;margin:0 auto;
 }
 #merch-preview-canvas{
-  display:block;width:300px;height:300px;
+  display:block;width:100%;height:100%;
 }
 @media(max-width:768px){
   .merch-cta{padding:72px 18px;}
@@ -689,8 +689,8 @@ footer{
   .merch-cta-text{align-items:center;}
   .mc-sub{margin-left:auto;margin-right:auto;}
   .mc-title{font-size:clamp(44px,13vw,80px);}
-  .mc-visual{width:220px;height:220px;}
-  #merch-preview-canvas{width:220px;height:220px;}
+  .mc-visual{width:min(260px,70vw);height:min(260px,70vw);}
+  #merch-preview-canvas{width:100%!important;height:100%!important;}
 
   /* IG section */
   .ig-section{padding:56px 18px;}
@@ -716,8 +716,8 @@ footer{
   .hero-ctas{grid-template-columns:1fr 1fr;}
   .hero-ctas a{font-size:.55rem;padding:.6rem .6rem;}
   .album-card{flex:0 0 135px;}
-  .mc-visual{width:180px;height:180px;}
-  #merch-preview-canvas{width:180px;height:180px;}
+  .mc-visual{width:min(200px,65vw);height:min(200px,65vw);}
+  #merch-preview-canvas{width:100%!important;height:100%!important;}
 }
 @media(hover:none),(pointer:coarse){
   #cur,#cur-ring{display:none!important;}
@@ -1114,18 +1114,22 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
   const wrap = canvas.parentElement;
   if (!wrap) return;
 
-  const W = 300, H = 300;
-  canvas.width  = W * Math.min(devicePixelRatio, 2);
-  canvas.height = H * Math.min(devicePixelRatio, 2);
-
-  const scene    = new THREE.Scene();
-  const camera   = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
   camera.position.set(0, 0.05, 5.2);
 
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-  renderer.setSize(W, H);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+  function resize() {
+    const s = wrap.clientWidth || 300;
+    renderer.setSize(s, s, false); // false = don't set CSS size
+    camera.aspect = 1;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
 
   const loader = new THREE.TextureLoader();
   function loadTex(url) {
