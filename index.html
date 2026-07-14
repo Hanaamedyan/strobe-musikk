@@ -1053,9 +1053,6 @@ if (window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
   const ctx = c.getContext('2d');
   let W, H, pts = [];
   const COLS = ['#00EEFF','#9D40FF','#FF2A7F','rgba(239,240,255,.6)'];
-  const isMobile = window.matchMedia('(max-width:768px)').matches;
-  const COUNT = isMobile ? 40 : 80;
-  const CONN_SQ = isMobile ? 0 : 75 * 75; // skip connections on mobile
 
   function resize() { W = c.width = innerWidth; H = c.height = innerHeight; }
 
@@ -1080,18 +1077,14 @@ if (window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
   }
 
   let mouseX = -1000, mouseY = -1000;
-  if (!isMobile) document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; }, { passive: true });
+  document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
 
   function init() {
     resize();
-    pts = Array.from({ length: COUNT }, () => new P());
+    pts = Array.from({ length: 160 }, () => new P());
   }
 
-  let paused = false;
-  document.addEventListener('visibilitychange', () => { paused = document.hidden; if (!paused) frame(); });
-
   function frame() {
-    if (paused) return;
     ctx.clearRect(0, 0, W, H);
     // Aurora glow
     const g = ctx.createRadialGradient(W*.5, 0, 0, W*.5, 0, H*.65);
@@ -1105,17 +1098,15 @@ if (window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
       mg.addColorStop(0, 'rgba(0,238,255,.045)'); mg.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = mg; ctx.fillRect(0,0,W,H);
     }
-    // Connections — squared distance, no Math.sqrt
-    if (CONN_SQ > 0) {
-      for (let i = 0; i < pts.length; i++) {
-        for (let j = i+1; j < pts.length; j++) {
-          const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
-          const d2 = dx*dx + dy*dy;
-          if (d2 < CONN_SQ) {
-            ctx.globalAlpha = .07 * (1 - Math.sqrt(d2)/75) * Math.min(pts[i].life, pts[j].life) * 3;
-            ctx.strokeStyle = pts[i].col; ctx.lineWidth = .35;
-            ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y); ctx.stroke();
-          }
+    // Connections
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i+1; j < pts.length; j++) {
+        const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+        const d = Math.sqrt(dx*dx+dy*dy);
+        if (d < 90) {
+          ctx.globalAlpha = .07 * (1-d/90) * Math.min(pts[i].life, pts[j].life) * 3;
+          ctx.strokeStyle = pts[i].col; ctx.lineWidth = .35;
+          ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y); ctx.stroke();
         }
       }
     }
@@ -1124,7 +1115,7 @@ if (window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
     requestAnimationFrame(frame);
   }
 
-  window.addEventListener('resize', init, { passive: true });
+  window.addEventListener('resize', init);
   init(); frame();
 })();
 
