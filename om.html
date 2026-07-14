@@ -124,12 +124,20 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;height:62px;display:flex;ali
 .cta-strip h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,5rem);line-height:.95;margin-bottom:1.5rem;}
 .cta-strip h2 em{font-style:normal;color:var(--cyan);}
 .cta-strip p{font-size:.95rem;color:var(--muted);max-width:460px;margin:0 auto 2.5rem;line-height:1.75;}
-.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.cta-btns{display:flex;flex-direction:column;gap:12px;align-items:center;width:100%;}
+.cta-btns a{width:min(320px,100%);justify-content:center;}
 .btn-neon{display:inline-flex;align-items:center;gap:8px;background:var(--cyan);color:#000;font-family:'DM Mono',monospace;font-size:.65rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:.85rem 1.8rem;transition:box-shadow .2s,transform .2s;box-shadow:0 0 20px rgba(0,238,255,.3);}
 .btn-neon:hover{box-shadow:0 0 40px rgba(0,238,255,.5);transform:translateY(-2px);}
 .btn-neon svg{width:14px;height:14px;}
 .btn-border{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(0,238,255,.3);color:var(--cyan);font-family:'DM Mono',monospace;font-size:.65rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:.85rem 1.8rem;transition:border-color .2s,box-shadow .2s,transform .2s;background:none;}
 .btn-border:hover{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,238,255,.15);transform:translateY(-2px);}
+.btn-border svg{width:14px;height:14px;}
+.btn-ig-live{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#833AB4,#FD1D1D,#F77737);color:#fff;font-family:'DM Mono',monospace;font-size:.65rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:.85rem 1.8rem;transition:opacity .2s,transform .2s,box-shadow .2s;box-shadow:0 0 24px rgba(253,29,29,.3);}
+.btn-ig-live:hover{opacity:.88;transform:translateY(-2px);box-shadow:0 0 44px rgba(253,29,29,.5);}
+.btn-ig-live svg{width:14px;height:14px;}
+.btn-tt-live{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#010101,#69C9D0,#EE1D52);color:#fff;font-family:'DM Mono',monospace;font-size:.65rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:.85rem 1.8rem;transition:opacity .2s,transform .2s,box-shadow .2s;box-shadow:0 0 24px rgba(0,238,255,.2);}
+.btn-tt-live:hover{opacity:.88;transform:translateY(-2px);box-shadow:0 0 44px rgba(0,238,255,.35);}
+.btn-tt-live svg{width:14px;height:14px;}
 
 footer{padding:2.5rem 44px;border-top:1px solid rgba(239,240,255,.07);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
 .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.12em;color:var(--white);opacity:.4;}
@@ -268,11 +276,18 @@ footer{padding:2.5rem 44px;border-top:1px solid rgba(239,240,255,.07);display:fl
       <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
       Stream på Spotify
     </a>
-    <a href="https://www.instagram.com/strobe_musikk/" target="_blank" rel="noopener" class="btn-border">
+    <a href="https://www.instagram.com/strobe_musikk/" target="_blank" rel="noopener" class="btn-ig-live">
       <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
       Følg på Instagram
     </a>
-    <a href="galleri.html" class="btn-border">Se galleri →</a>
+    <a href="https://www.tiktok.com/@strobemusikk" target="_blank" rel="noopener" class="btn-tt-live">
+      <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.24 8.24 0 004.84 1.56V6.79a4.85 4.85 0 01-1.07-.1z"/></svg>
+      Følg på TikTok
+    </a>
+    <a href="galleri.html" class="btn-border">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      Se galleri
+    </a>
   </div>
 </div>
 
