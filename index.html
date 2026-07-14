@@ -478,6 +478,33 @@ nav.solid{
 .btn-ig:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 0 36px rgba(253,29,29,.35);}
 .btn-ig svg{width:15px;height:15px;}
 
+/* ── TIKTOK ── */
+.tt-section{
+  background:linear-gradient(135deg,rgba(0,238,255,.07),rgba(157,64,255,.07));
+  border-top:1px solid rgba(0,238,255,.12);
+  border-bottom:1px solid rgba(0,238,255,.12);
+  padding:80px 44px;text-align:center;
+  position:relative;z-index:1;overflow:hidden;
+}
+.tt-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,rgba(0,238,255,.06) 0%,transparent 65%);
+  pointer-events:none;
+}
+.btn-tt{
+  display:inline-flex;align-items:center;gap:9px;
+  background:linear-gradient(135deg,#010101,#69C9D0,#EE1D52);
+  color:#fff;
+  font-family:'DM Mono',monospace;font-size:.62rem;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:.75rem 1.8rem;border-radius:22px;border:none;cursor:pointer;
+  box-shadow:0 0 24px rgba(0,238,255,.2);
+  transition:opacity .2s,transform .2s,box-shadow .2s;
+  position:relative;z-index:1;
+}
+.btn-tt:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 0 36px rgba(0,238,255,.35);}
+.btn-tt svg{width:15px;height:15px;}
+
 /* ── OM ── */
 .om-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;margin-top:48px;}
 .om-photo{
@@ -952,6 +979,10 @@ footer{
       <a href="https://www.instagram.com/strobe_musikk/" target="_blank" rel="noopener" class="btn-border">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="width:13px;height:13px;"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
         Følg på Instagram
+      </a>
+      <a href="https://www.tiktok.com/@strobemusikk" target="_blank" rel="noopener" class="btn-tt">
+        <svg fill="currentColor" viewBox="0 0 24 24" style="width:13px;height:13px;"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.24 8.24 0 004.84 1.56V6.79a4.85 4.85 0 01-1.07-.1z"/></svg>
+        TikTok
       </a>
     </div>
   </div>
