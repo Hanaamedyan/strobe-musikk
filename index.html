@@ -1320,6 +1320,8 @@ function initAurora(canvasId, speed = 1.0, glow = 15.0) {
   const resize = () => {
     const w = parent.clientWidth, h = parent.clientHeight;
     renderer.setSize(w * RESOLUTION_SCALE, h * RESOLUTION_SCALE);
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
     program.uniforms.uResolution.value.set(w, h);
   };
   window.addEventListener('resize', resize);
