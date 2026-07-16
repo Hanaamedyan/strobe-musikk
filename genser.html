@@ -273,7 +273,8 @@ main{
 /* RESPONSIVE */
 @media(max-width:980px){
   main{grid-template-columns:1fr;grid-template-rows:auto auto;padding-top:62px;}
-  .canvas-pane{position:relative;top:auto;height:55vh;min-height:320px;order:-1;}
+  .canvas-pane{position:relative;top:auto;height:55vh;min-height:320px;order:-1;cursor:default;}
+  .canvas-pane.dragging{cursor:default;}
   .text-pane{
     order:1;width:100%;box-sizing:border-box;
     padding:24px 20px 40px;
@@ -316,6 +317,10 @@ main{
   .canvas-pane{height:44vh;min-height:260px;}
   .size-table{font-size:.5rem;}
   .size-table th,.size-table td{padding:5px 5px;}
+}
+@media(hover:none),(pointer:coarse){
+  .canvas-pane{cursor:default!important;}
+  .canvas-pane.dragging{cursor:default!important;}
 }
 </style>
 </head>

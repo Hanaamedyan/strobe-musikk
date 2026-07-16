@@ -741,6 +741,8 @@ footer{
   /* Cursor */
   #cur,#cur-ring{display:none;}
   body{cursor:auto;}
+  .album-scroll{cursor:default;}
+  .album-scroll.dragging{cursor:default;}
 }
 @media(max-width:480px){
   .hero-ctas{grid-template-columns:1fr 1fr;}
@@ -752,6 +754,8 @@ footer{
 @media(hover:none),(pointer:coarse){
   #cur,#cur-ring{display:none!important;}
   body{cursor:auto!important;}
+  .album-scroll{cursor:default!important;}
+  .album-scroll.dragging{cursor:default!important;}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important;}}
 </style>
