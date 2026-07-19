@@ -81,6 +81,24 @@ header{
 }
 .h-nav a:hover{color:var(--cyan);opacity:1;}
 
+/* Hamburger */
+.ham-btn{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:4px;width:32px;height:32px;z-index:110;}
+.ham-btn span{display:block;width:22px;height:1.5px;background:var(--white);transition:transform .3s ease,opacity .2s ease;transform-origin:center;}
+.ham-btn.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.ham-btn.open span:nth-child(2){opacity:0;}
+.ham-btn.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+
+/* Mobile overlay menu */
+.mob-nav{position:fixed;inset:0;background:rgba(3,3,9,.97);z-index:100;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:5rem 2rem;opacity:0;pointer-events:none;transition:opacity .35s ease;}
+.mob-nav.open{opacity:1;pointer-events:all;}
+.mob-nav a{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,10vw,3.5rem);color:var(--white);letter-spacing:.04em;opacity:.55;transition:opacity .2s,color .2s;display:block;line-height:1.25;text-decoration:none;}
+.mob-nav a:hover{opacity:1;color:var(--cyan);}
+
+@media(max-width:700px){
+  .h-nav{display:none;}
+  .ham-btn{display:flex;}
+}
+
 /* ── MAIN ── */
 main{
   position:relative;z-index:2;flex:1;
@@ -335,7 +353,18 @@ main{
     <a href="index.html#spor">Spor</a>
     <a href="index.html#om">Om</a>
   </nav>
+  <button class="ham-btn" id="hamBtn" aria-label="Åpne meny" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<div class="mob-nav" id="mobNav">
+  <a href="index.html">Hjem</a>
+  <a href="index.html#musikk">Musikk</a>
+  <a href="galleri.html">Galleri</a>
+  <a href="index.html#spor">Spor</a>
+  <a href="index.html#om">Om</a>
+</div>
 
 <main>
   <!-- LEFT — text -->
@@ -622,6 +651,23 @@ tick();
   <span style="font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(239,240,255,.4);">© 2026 Strobe · Alle rettigheter forbeholdt</span>
   <span style="font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;color:rgba(0,238,255,.18);">BYGGET AV <a href="https://hanaamedyan.github.io/yamsas/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 16px;text-decoration:none;"><svg width="18" height="22" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="10" y1="12" x2="2" y2="2" stroke="white" stroke-width="2.2" stroke-linecap="round"/><line x1="10" y1="12" x2="18" y2="2" stroke="white" stroke-width="2.2" stroke-linecap="round"/><line x1="10" y1="12" x2="10" y2="22" stroke="white" stroke-width="2.2" stroke-linecap="round"/><circle cx="10" cy="12" r="2.8" fill="#C8A660"/></svg><div style="line-height:1.2;"><div style="font-size:13px;font-weight:800;color:#FFFFFF;letter-spacing:-.2px;line-height:1.1;">YAMS <span style="font-weight:400;font-size:11px;color:rgba(255,255,255,.5);">AS</span></div><div style="font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.38);margin-top:2px;">Website Solutions</div></div></a></span>
 </footer>
+
+<script>
+(function(){
+  const btn = document.getElementById('hamBtn');
+  const nav = document.getElementById('mobNav');
+  if(!btn||!nav) return;
+  btn.addEventListener('click',()=>{
+    btn.classList.toggle('open');
+    nav.classList.toggle('open');
+    btn.setAttribute('aria-expanded', nav.classList.contains('open'));
+  });
+  nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+    btn.classList.remove('open');
+    nav.classList.remove('open');
+  }));
+})();
+</script>
 
 </body>
 </html>
