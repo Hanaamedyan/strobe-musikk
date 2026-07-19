@@ -89,10 +89,10 @@ header{
 .ham-btn.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
 
 /* Mobile overlay menu */
-.mob-nav{position:fixed;inset:0;background:rgba(3,3,9,.97);z-index:100;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:5rem 2rem;opacity:0;pointer-events:none;transition:opacity .35s ease;}
-.mob-nav.open{opacity:1;pointer-events:all;}
-.mob-nav a{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,10vw,3.5rem);color:var(--white);letter-spacing:.04em;opacity:.55;transition:opacity .2s,color .2s;display:block;line-height:1.25;text-decoration:none;}
-.mob-nav a:hover{opacity:1;color:var(--cyan);}
+.mob-nav{display:none;position:fixed;inset:0;background:rgba(3,3,9,.98);z-index:499;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-top:2px solid var(--cyan);}
+.mob-nav.open{display:flex;}
+.mob-nav a{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:rgba(239,240,255,1);letter-spacing:.1em;transition:color .2s;text-decoration:none;}
+.mob-nav a:hover{color:var(--cyan);}
 
 @media(max-width:700px){
   .h-nav{display:none;}
@@ -359,11 +359,12 @@ main{
 </header>
 
 <div class="mob-nav" id="mobNav">
-  <a href="index.html">Hjem</a>
   <a href="index.html#musikk">Musikk</a>
+  <a href="om.html">Om</a>
   <a href="galleri.html">Galleri</a>
-  <a href="index.html#spor">Spor</a>
-  <a href="index.html#om">Om</a>
+  <a href="genser.html" style="color:var(--pink);">Merch</a>
+  <a href="https://open.spotify.com/artist/5W717hTN8g6Ljr1kuNZqDm" target="_blank" style="color:var(--cyan);">Spotify</a>
+  <a href="https://www.instagram.com/strobe_musikk/" target="_blank" style="color:var(--pink);">Instagram</a>
 </div>
 
 <main>
