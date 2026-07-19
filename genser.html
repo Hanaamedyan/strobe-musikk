@@ -93,6 +93,8 @@ header{
 .mob-nav.open{display:flex;}
 .mob-nav a{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:rgba(239,240,255,1);letter-spacing:.1em;transition:color .2s;text-decoration:none;}
 .mob-nav a:hover{color:var(--cyan);}
+.mob-close{position:absolute;top:1.2rem;right:1.4rem;background:none;border:none;cursor:pointer;color:rgba(239,240,255,.5);font-size:2rem;line-height:1;transition:color .2s;padding:4px;}
+.mob-close:hover{color:var(--cyan);}
 
 @media(max-width:700px){
   .h-nav{display:none;}
@@ -359,6 +361,7 @@ main{
 </header>
 
 <div class="mob-nav" id="mobNav">
+  <button class="mob-close" id="mobClose" aria-label="Lukk meny">&#x2715;</button>
   <a href="index.html#musikk">Musikk</a>
   <a href="om.html">Om</a>
   <a href="galleri.html">Galleri</a>
@@ -663,10 +666,10 @@ tick();
     nav.classList.toggle('open');
     btn.setAttribute('aria-expanded', nav.classList.contains('open'));
   });
-  nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
-    btn.classList.remove('open');
-    nav.classList.remove('open');
-  }));
+  function close(){btn.classList.remove('open');nav.classList.remove('open');}
+  nav.querySelectorAll('a').forEach(a=>a.addEventListener('click', close));
+  const closeBtn = document.getElementById('mobClose');
+  if(closeBtn) closeBtn.addEventListener('click', close);
 })();
 </script>
 
