@@ -108,16 +108,69 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;height:62px;display:flex;ali
 .section-tag::before{content:'';display:block;width:16px;height:1px;background:var(--cyan);}
 .section-head{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,5rem);line-height:.95;margin-bottom:56px;}
 .section-head em{font-style:normal;color:var(--cyan);}
-.members-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(239,240,255,.04);}
-.member-card{background:var(--bg2);padding:2.5rem 2rem;position:relative;overflow:hidden;transition:background .25s;}
-.member-card:hover{background:var(--bg3);}
-.member-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .4s ease;}
-.member-card:hover::before{transform:scaleX(1);}
-.member-initial{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:rgba(0,238,255,.08);line-height:1;margin-bottom:.8rem;transition:color .3s;}
-.member-card:hover .member-initial{color:rgba(0,238,255,.18);}
+.members-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.member-initial{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:rgba(0,238,255,.1);line-height:1;margin-bottom:.8rem;}
 .member-name{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.04em;margin-bottom:.3rem;}
 .member-role{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.2rem;}
 .member-bio{font-size:.88rem;color:var(--muted);line-height:1.8;}
+
+/* GlowCard */
+[data-glow]{
+  --base:200;--spread:200;--radius:16;--border:2;
+  --backdrop:hsl(0 0% 8% / 0.85);--backup-border:var(--backdrop);
+  --size:220;--outer:1;
+  --border-size:calc(var(--border,2) * 1px);
+  --spotlight-size:calc(var(--size,150) * 1px);
+  --hue:calc(var(--base) + (var(--xp,0) * var(--spread,0)));
+  background-image:radial-gradient(
+    var(--spotlight-size) var(--spotlight-size) at
+    calc(var(--x,0) * 1px) calc(var(--y,0) * 1px),
+    hsl(var(--hue,210) 100% 70% / 0.08), transparent
+  );
+  background-color:var(--backdrop);
+  background-size:calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)));
+  background-position:50% 50%;
+  background-attachment:fixed;
+  border:var(--border-size) solid var(--backup-border);
+  border-radius:calc(var(--radius) * 1px);
+  position:relative;
+  touch-action:none;
+  padding:2.5rem 2rem;
+  transition:background-color .3s;
+}
+[data-glow]::before,[data-glow]::after{
+  pointer-events:none;content:"";
+  position:absolute;inset:calc(var(--border-size) * -1);
+  border:var(--border-size) solid transparent;
+  border-radius:calc(var(--radius) * 1px);
+  background-attachment:fixed;
+  background-size:calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)));
+  background-repeat:no-repeat;background-position:50% 50%;
+  mask:linear-gradient(transparent,transparent),linear-gradient(white,white);
+  mask-clip:padding-box,border-box;mask-composite:intersect;
+}
+[data-glow]::before{
+  background-image:radial-gradient(
+    calc(var(--spotlight-size) * 0.75) calc(var(--spotlight-size) * 0.75) at
+    calc(var(--x,0) * 1px) calc(var(--y,0) * 1px),
+    hsl(var(--hue,210) 100% 50% / 1), transparent 100%
+  );
+  filter:brightness(2);
+}
+[data-glow]::after{
+  background-image:radial-gradient(
+    calc(var(--spotlight-size) * 0.5) calc(var(--spotlight-size) * 0.5) at
+    calc(var(--x,0) * 1px) calc(var(--y,0) * 1px),
+    hsl(0 100% 100% / 0.8), transparent 100%
+  );
+}
+[data-glow] [data-glow-inner]{
+  position:absolute;inset:0;will-change:filter;
+  opacity:var(--outer,1);border-radius:calc(var(--radius) * 1px);
+  border-width:calc(var(--border-size) * 20);
+  filter:blur(calc(var(--border-size) * 10));
+  background:none;pointer-events:none;border:none;
+}
 
 /* CTA */
 .cta-strip{padding:80px 44px;background:var(--bg2);border-top:1px solid rgba(0,238,255,.07);text-align:center;}
@@ -248,19 +301,22 @@ footer{padding:2.5rem 44px;border-top:1px solid rgba(239,240,255,.07);display:fl
     <div class="section-tag rev">Artistene</div>
     <h2 class="section-head rev d1">Møt <em>trioen</em></h2>
     <div class="members-grid">
-      <div class="member-card rev">
+      <div data-glow class="rev" style="--base:180;--spread:160;">
+        <div data-glow-inner></div>
         <div class="member-initial">E</div>
         <div class="member-name">Erlend Grande</div>
         <div class="member-role">Vokalist</div>
         <p class="member-bio">Erlend er hjerte og stemme i Strobe. Med en vokal som like gjerne hviler i stillhet som sprenger seg frem, bringer han en sårbarhet og nærvær til musikken som er vanskelig å kopiere.</p>
       </div>
-      <div class="member-card rev d1">
+      <div data-glow class="rev d1" style="--base:280;--spread:160;">
+        <div data-glow-inner></div>
         <div class="member-initial">J</div>
         <div class="member-name">Joakim Skogø</div>
         <div class="member-role">Vokalist</div>
         <p class="member-bio">Joakim er den melodiske kraften i trioen. Han knytter de tre stemmene sammen og gir Strobe den harmoniske dybden som gjør lyden deres umiskjennelig.</p>
       </div>
-      <div class="member-card rev d2">
+      <div data-glow class="rev d2" style="--base:330;--spread:160;">
+        <div data-glow-inner></div>
         <div class="member-initial">A</div>
         <div class="member-name">André Sonen</div>
         <div class="member-role">Vokalist</div>
@@ -308,6 +364,16 @@ document.getElementById('burger').addEventListener('click',function(){this.class
 document.querySelectorAll('.mob-nav a').forEach(a=>a.addEventListener('click',()=>{document.getElementById('burger').classList.remove('open');document.getElementById('mob-nav').classList.remove('open');}));
 const ro=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.1});
 document.querySelectorAll('.rev,.rev-l').forEach(el=>ro.observe(el));
+
+// GlowCard pointer tracking
+document.addEventListener('pointermove', e => {
+  document.querySelectorAll('[data-glow]').forEach(card => {
+    card.style.setProperty('--x', e.clientX.toFixed(2));
+    card.style.setProperty('--xp', (e.clientX / window.innerWidth).toFixed(2));
+    card.style.setProperty('--y', e.clientY.toFixed(2));
+    card.style.setProperty('--yp', (e.clientY / window.innerHeight).toFixed(2));
+  });
+});
 </script>
 </body>
 </html>
