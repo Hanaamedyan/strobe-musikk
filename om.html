@@ -365,15 +365,14 @@ document.querySelectorAll('.mob-nav a').forEach(a=>a.addEventListener('click',()
 const ro=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.1});
 document.querySelectorAll('.rev,.rev-l').forEach(el=>ro.observe(el));
 
-// GlowCard pointer tracking
+// GlowCard pointer tracking — set on root once, cards inherit via background-attachment:fixed
+const root = document.documentElement;
 document.addEventListener('pointermove', e => {
-  document.querySelectorAll('[data-glow]').forEach(card => {
-    card.style.setProperty('--x', e.clientX.toFixed(2));
-    card.style.setProperty('--xp', (e.clientX / window.innerWidth).toFixed(2));
-    card.style.setProperty('--y', e.clientY.toFixed(2));
-    card.style.setProperty('--yp', (e.clientY / window.innerHeight).toFixed(2));
-  });
-});
+  root.style.setProperty('--x', e.clientX.toFixed(2));
+  root.style.setProperty('--xp', (e.clientX / window.innerWidth).toFixed(2));
+  root.style.setProperty('--y', e.clientY.toFixed(2));
+  root.style.setProperty('--yp', (e.clientY / window.innerHeight).toFixed(2));
+}, { passive: true });
 </script>
 </body>
 </html>
