@@ -25,7 +25,7 @@ a{text-decoration:none;color:inherit;}
 ::-webkit-scrollbar-thumb{background:var(--cyan);}
 
 #cur{width:10px;height:10px;background:var(--cyan);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .15s,height .15s,background .2s;mix-blend-mode:screen;}
-#cur-ring{width:34px;height:34px;border:1.5px solid rgba(0,238,255,.35);border-radius:50%;position:fixed;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:left .09s ease,top .09s ease;}
+#cur-ring{width:34px;height:34px;border:1.5px solid rgba(0,238,255,.35);border-radius:50%;position:fixed;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:transform .09s ease;}
 .is-hovering #cur{width:16px;height:16px;background:var(--pink);}
 .is-hovering #cur-ring{width:52px;height:52px;border-color:rgba(255,42,127,.3);}
 body::before{content:'';position:fixed;inset:0;z-index:9995;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 4px);}
@@ -358,7 +358,19 @@ footer{padding:2.5rem 44px;border-top:1px solid rgba(239,240,255,.07);display:fl
 
 <script>
 const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
-document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';});
+(function(){
+  const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+  if(!cur||!ring) return;
+  let rx=0,ry=0,cx=0,cy=0,raf;
+  function tick(){
+    cx+=(rx-cx)*.12; cy+=(ry-cy)*.12;
+    cur.style.transform='translate('+rx+'px,'+ry+'px) translate(-50%,-50%)';
+    ring.style.transform='translate('+cx.toFixed(1)+'px,'+cy.toFixed(1)+'px) translate(-50%,-50%)';
+    raf=requestAnimationFrame(tick);
+  }
+  document.addEventListener('pointermove',e=>{rx=e.clientX;ry=e.clientY;},{passive:true});
+  tick();
+})();
 document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('is-hovering'));el.addEventListener('mouseleave',()=>document.body.classList.remove('is-hovering'));});
 document.getElementById('burger').addEventListener('click',function(){this.classList.toggle('open');document.getElementById('mob-nav').classList.toggle('open');});
 document.querySelectorAll('.mob-nav a').forEach(a=>a.addEventListener('click',()=>{document.getElementById('burger').classList.remove('open');document.getElementById('mob-nav').classList.remove('open');}));
