@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RTNNBWD6NC"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-RTNNBWD6NC');
+  if(localStorage.getItem('strobe_cookie_consent') === 'accepted'){
+    (function(){
+      var s=document.createElement('script');s.async=true;
+      s.src='https://www.googletagmanager.com/gtag/js?id=G-RTNNBWD6NC';
+      document.head.appendChild(s);
+      s.onload=function(){gtag('js',new Date());gtag('config','G-RTNNBWD6NC');};
+    })();
+  }
 </script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -285,7 +289,7 @@ footer{
       <li>Fornavn og etternavn</li>
       <li>E-postadresse (for ordrebekreftelse)</li>
       <li>Leveringsadresse</li>
-      <li>Betalingsinformasjon — behandles utelukkende av Vipps AS, vi lagrer ikke kortdata</li>
+      <li>Betalingsinformasjon — behandles utelukkende av Stripe (Stripe, Inc.), vi lagrer ikke kortdata</li>
     </ul>
   </div>
 
@@ -337,7 +341,7 @@ footer{
     <p>Vi deler kun data med tredjeparter der det er nødvendig for å levere tjenestene.</p>
     <ul>
       <li><strong style="color:var(--white);">Google LLC</strong> — Behandler statistikkdata via Google Analytics. Data kan overføres til USA under EUs standard kontraktsbestemmelser (SCC). Les <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Googles personvernpolicy</a>.</li>
-      <li><strong style="color:var(--white);">Vipps AS</strong> — Behandler betalinger ved kjøp av merch. Vi har ingen tilgang til kortopplysningene dine. Les <a href="https://vipps.no/personvern" target="_blank" rel="noopener">Vipps' personvernpolicy</a>.</li>
+      <li><strong style="color:var(--white);">Stripe, Inc.</strong> — Behandler betalinger ved kjøp av merch. Vi har ingen tilgang til kortopplysningene dine. Stripe har selvstendig behandlingsansvar for betalingsdataene. Les <a href="https://stripe.com/en-no/privacy" target="_blank" rel="noopener">Stripes personvernpolicy</a>.</li>
       <li><strong style="color:var(--white);">YAMS AS</strong> — Teknisk leverandør og utvikler av nettsiden. Har tilgang til nettsidens kildekode og hosting-miljø for vedlikeholds- og driftsformål. Rollen som behandlingsansvarlig eller databehandler er avklart i separat avtale mellom Strobe og YAMS AS.</li>
       <li><strong style="color:var(--white);">Frakt- og logistikkleverandør</strong> — Navn og leveringsadresse deles med fraktselskapet for å levere bestilte produkter.</li>
     </ul>
@@ -450,5 +454,49 @@ footer{
   </div>
 </footer>
 
+<!-- COOKIE BANNER -->
+<style>
+#ck{position:fixed;bottom:0;left:0;right:0;z-index:99999;display:none;background:#07071C;border-top:1px solid rgba(0,238,255,.18);box-shadow:0 -12px 48px rgba(0,0,0,.7);}
+#ck.show{display:block;animation:ck-up .55s cubic-bezier(.16,1,.3,1);}
+@keyframes ck-up{from{transform:translateY(100%);}to{transform:translateY(0);}}
+#ck-in{max-width:1280px;margin:0 auto;padding:20px 44px;display:flex;align-items:center;gap:28px;flex-wrap:wrap;justify-content:space-between;}
+#ck-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:.1em;color:#00EEFF;margin-bottom:4px;}
+#ck-txt{font-family:'Space Grotesk',sans-serif;font-size:.82rem;line-height:1.6;color:rgba(239,240,255,.6);max-width:600px;}
+#ck-txt a{color:#00EEFF;text-decoration:none;}
+#ck-txt a:hover{opacity:.7;}
+#ck-btns{display:flex;gap:10px;flex-shrink:0;}
+.ck-yes{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;padding:11px 26px;border:none;border-radius:6px;cursor:pointer;background:#00EEFF;color:#030309;font-weight:500;transition:opacity .2s;}
+.ck-yes:hover{opacity:.82;}
+.ck-no{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;padding:11px 22px;border:1px solid rgba(239,240,255,.2);border-radius:6px;cursor:pointer;background:transparent;color:rgba(239,240,255,.55);transition:border-color .2s,color .2s;}
+.ck-no:hover{border-color:rgba(239,240,255,.5);color:rgba(239,240,255,.9);}
+@media(max-width:768px){#ck-in{padding:18px 18px 24px;flex-direction:column;align-items:flex-start;gap:14px;}#ck-btns{width:100%;}.ck-yes,.ck-no{flex:1;text-align:center;padding:12px 10px;}}
+</style>
+<div id="ck">
+  <div id="ck-in">
+    <div>
+      <div id="ck-ttl">COOKIES</div>
+      <p id="ck-txt">Vi bruker informasjonskapsler til statistikk via Google Analytics. Norsk ekomlov krever ditt samtykke. Du kan lese mer om dette nedenfor.</p>
+    </div>
+    <div id="ck-btns">
+      <button class="ck-yes" onclick="ckAccept()">Godta analyse-cookies</button>
+      <button class="ck-no" onclick="ckDecline()">Avslå</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){if(!localStorage.getItem('strobe_cookie_consent'))document.getElementById('ck').classList.add('show');})();
+function ckAccept(){
+  localStorage.setItem('strobe_cookie_consent','accepted');
+  document.getElementById('ck').style.display='none';
+  var s=document.createElement('script');s.async=true;
+  s.src='https://www.googletagmanager.com/gtag/js?id=G-RTNNBWD6NC';
+  document.head.appendChild(s);
+  s.onload=function(){gtag('js',new Date());gtag('config','G-RTNNBWD6NC');};
+}
+function ckDecline(){
+  localStorage.setItem('strobe_cookie_consent','declined');
+  document.getElementById('ck').style.display='none';
+}
+</script>
 </body>
 </html>
