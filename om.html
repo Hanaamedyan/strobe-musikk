@@ -208,14 +208,16 @@ footer{padding:2.5rem 44px;border-top:1px solid rgba(239,240,255,.07);display:fl
 .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.32s}
 
 @media(max-width:900px){
-  nav{padding:0 20px;}
-  .nav-center,.nav-sp,.nav-ig{display:none;}
-  .burger{display:flex;}
   .page-hero{padding:110px 20px 60px;min-height:auto;}
   .about-section,.members-section,.cta-strip{padding:70px 20px;}
   .about-inner{grid-template-columns:1fr;gap:3rem;}
   .members-grid{grid-template-columns:1fr;}
   footer{padding:2rem 20px;}
+}
+@media(max-width:768px){
+  nav{padding:0 20px;}
+  .nav-center,.nav-sp,.nav-ig{display:none;}
+  .burger{display:flex;}
 }
 @media(hover:none),(pointer:coarse){
   #cur,#cur-ring{display:none!important;}
