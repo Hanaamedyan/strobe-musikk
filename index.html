@@ -762,6 +762,37 @@ footer{
   .album-scroll.dragging{cursor:default!important;}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important;}}
+
+/* ── COUNTDOWN ── */
+.countdown-banner{
+  background:var(--bg2);
+  border-bottom:1px solid rgba(0,238,255,.12);
+  padding:1.4rem 2rem;
+  display:flex;align-items:center;justify-content:center;gap:2rem;
+  flex-wrap:wrap;
+}
+.cd-label{
+  font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);
+  display:flex;align-items:center;gap:.6rem;
+}
+.cd-label::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:cd-pulse 1.4s ease-in-out infinite;}
+@keyframes cd-pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,238,255,.5);}50%{opacity:.6;box-shadow:0 0 0 5px rgba(0,238,255,0);}}
+.cd-units{display:flex;align-items:center;gap:.6rem;}
+.cd-unit{display:flex;flex-direction:column;align-items:center;gap:.15rem;}
+.cd-num{
+  font-family:'Bebas Neue',sans-serif;font-size:2.2rem;line-height:1;
+  color:var(--white);letter-spacing:.05em;min-width:2.4ch;text-align:center;
+}
+.cd-tag{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(239,240,255,.4);}
+.cd-sep{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(0,238,255,.3);line-height:1;margin-bottom:.8rem;}
+.cd-event{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(239,240,255,.45);}
+.countdown-done{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.1em;color:var(--cyan);text-align:center;}
+@media(max-width:500px){
+  .countdown-banner{gap:1rem;padding:1rem 1.2rem;}
+  .cd-num{font-size:1.8rem;}
+  .cd-label{font-size:.52rem;}
+}
 </style>
 </head>
 <body>
@@ -802,6 +833,21 @@ footer{
   <a href="https://open.spotify.com/artist/5W717hTN8g6Ljr1kuNZqDm" target="_blank" style="color:var(--cyan);">Spotify</a>
   <a href="https://www.instagram.com/strobe_musikk/" target="_blank" style="color:var(--pink);">Instagram</a>
   <a href="https://www.tiktok.com/@strobemusikk" target="_blank" style="color:var(--cyan);">TikTok</a>
+</div>
+
+<!-- COUNTDOWN -->
+<div class="countdown-banner" id="countdown-banner">
+  <span class="cd-label">Sommerfest · Jonsvatnet</span>
+  <div class="cd-units" id="cd-units">
+    <div class="cd-unit"><span class="cd-num" id="cd-d">--</span><span class="cd-tag">dager</span></div>
+    <span class="cd-sep">:</span>
+    <div class="cd-unit"><span class="cd-num" id="cd-h">--</span><span class="cd-tag">timer</span></div>
+    <span class="cd-sep">:</span>
+    <div class="cd-unit"><span class="cd-num" id="cd-m">--</span><span class="cd-tag">min</span></div>
+    <span class="cd-sep">:</span>
+    <div class="cd-unit"><span class="cd-num" id="cd-s">--</span><span class="cd-tag">sek</span></div>
+  </div>
+  <span class="cd-event">22. aug — 17:00</span>
 </div>
 
 <!-- HERO -->
@@ -1121,6 +1167,34 @@ if (window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
 /* NAV */
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => nav.classList.toggle('solid', scrollY > 40), { passive: true });
+
+/* COUNTDOWN */
+(function(){
+  const target = new Date('2026-08-22T17:00:00');
+  const dEl = document.getElementById('cd-d');
+  const hEl = document.getElementById('cd-h');
+  const mEl = document.getElementById('cd-m');
+  const sEl = document.getElementById('cd-s');
+  const units = document.getElementById('cd-units');
+  function pad(n){return String(n).padStart(2,'0');}
+  function tick(){
+    const diff = target - Date.now();
+    if(diff <= 0){
+      units.innerHTML = '<span class="countdown-done">🎉 Det er i kveld!</span>';
+      return;
+    }
+    const d = Math.floor(diff/86400000);
+    const h = Math.floor((diff%86400000)/3600000);
+    const m = Math.floor((diff%3600000)/60000);
+    const s = Math.floor((diff%60000)/1000);
+    dEl.textContent = pad(d);
+    hEl.textContent = pad(h);
+    mEl.textContent = pad(m);
+    sEl.textContent = pad(s);
+    setTimeout(tick, 1000);
+  }
+  tick();
+})();
 
 /* BURGER */
 const burger = document.getElementById('burger');
