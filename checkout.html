@@ -76,20 +76,6 @@ main{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:120px 36
 .fg-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .fg-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
 
-/* PRODUCT PICKER */
-.products{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.prod-pick{
-  position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
-  padding:18px 12px;background:rgba(15,15,42,.7);border:1px solid rgba(239,240,255,.22);border-radius:3px;
-  cursor:pointer;transition:border-color .2s,background .2s;user-select:none;text-align:center;
-}
-.prod-pick:hover{border-color:rgba(0,238,255,.35);}
-.prod-pick input{position:absolute;opacity:0;pointer-events:none;}
-.prod-pick.selected{background:rgba(0,238,255,.10);border-color:var(--cyan);box-shadow:0 0 18px rgba(0,238,255,.25),inset 0 0 12px rgba(0,238,255,.08);}
-.prod-pick-num{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(239,240,255,.45);}
-.prod-pick.selected .prod-pick-num{color:var(--cyan);}
-.prod-pick-name{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:.04em;color:var(--white);}
-
 /* SIZE PICKER */
 .sizes{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
 .size{
@@ -231,26 +217,9 @@ main{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:120px 36
   <!-- LEFT — checkout form -->
   <form class="checkout-side" id="checkoutForm" novalidate>
 
-    <!-- STEP 1 — Produkt -->
+    <!-- STEP 1 — Størrelse + antall -->
     <div class="step">
-      <div class="step-head"><div class="step-num">1</div><div class="step-title">Velg genser</div></div>
-      <div class="products" id="products">
-        <label class="prod-pick selected" id="pp1">
-          <input type="radio" name="produkt" value="Strobe Genser 1" checked/>
-          <span class="prod-pick-num">Produkt 01</span>
-          <span class="prod-pick-name">Strobe Genser 1</span>
-        </label>
-        <label class="prod-pick" id="pp2">
-          <input type="radio" name="produkt" value="Strobe Genser 2"/>
-          <span class="prod-pick-num">Produkt 02</span>
-          <span class="prod-pick-name">Strobe Genser 2</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- STEP 2 — Størrelse + antall -->
-    <div class="step">
-      <div class="step-head"><div class="step-num">2</div><div class="step-title">Velg størrelse</div></div>
+      <div class="step-head"><div class="step-num">1</div><div class="step-title">Velg størrelse</div></div>
       <div class="sizes" id="sizes">
         <label class="size"><input type="radio" name="size" value="XS"/>XS</label>
         <label class="size"><input type="radio" name="size" value="S"/>S</label>
@@ -273,9 +242,9 @@ main{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:120px 36
       </div>
     </div>
 
-    <!-- STEP 3 — Leveringsinfo -->
+    <!-- STEP 2 — Leveringsinfo -->
     <div class="step">
-      <div class="step-head"><div class="step-num">3</div><div class="step-title">Leveringsinfo</div></div>
+      <div class="step-head"><div class="step-num">2</div><div class="step-title">Leveringsinfo</div></div>
 
       <div class="fg-row">
         <div class="fg"><label>Fornavn *</label><input type="text" name="firstname" required placeholder="Ola"/></div>
@@ -309,7 +278,7 @@ main{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:120px 36
     <div class="prod">
       <div class="prod-art">STROBE</div>
       <div class="prod-info">
-        <div class="prod-name" id="sumProdukt">Strobe Genser 1</div>
+        <div class="prod-name">Strobe genser</div>
         <div class="prod-meta">Sort · <span id="sumSize" class="cyan">M</span> · <span id="sumQty">×1</span></div>
       </div>
     </div>
@@ -348,20 +317,6 @@ main{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:120px 36
 
 <script>
 const UNIT = 888, SHIPPING = 69;
-
-// ── PRODUCT PICKER ──
-const prodPicks = document.querySelectorAll('#products .prod-pick');
-function selectProduct(el){
-  prodPicks.forEach(p => p.classList.remove('selected'));
-  el.classList.add('selected');
-  el.querySelector('input').checked = true;
-  document.getElementById('sumProdukt').textContent = el.querySelector('input').value;
-}
-prodPicks.forEach(p => p.addEventListener('click', () => selectProduct(p)));
-
-// Pre-select based on URL param ?produkt=2
-const urlParam = new URLSearchParams(location.search).get('produkt');
-if(urlParam === '2') selectProduct(document.getElementById('pp2'));
 
 // ── SIZE PICKER ──
 const sizes = document.querySelectorAll('#sizes .size');
@@ -406,7 +361,6 @@ form.addEventListener('submit', async e => {
   }
 
   const size = document.querySelector('input[name="size"]:checked')?.value || 'L';
-  const produkt = document.querySelector('input[name="produkt"]:checked')?.value || 'Strobe Genser 1';
   const total = qty * UNIT + SHIPPING;
   const orderNo = 'STR-' + Math.floor(100000 + Math.random()*900000);
 
@@ -416,7 +370,7 @@ form.addEventListener('submit', async e => {
   // Set fields Web3Forms uses
   fd.append('access_key', WEB3_KEY);
   fd.append('to', 'yamsasno@gmail.com');
-  fd.append('subject', `🛒 Ny bestilling — ${produkt} — ${orderNo} (${data.firstname || ''} ${data.lastname || ''})`);
+  fd.append('subject', `🛒 Ny bestilling — Strobe Genser — ${orderNo} (${data.firstname || ''} ${data.lastname || ''})`);
   fd.append('from_name', 'STROBE Merch');
   fd.append('replyto', data.email || '');
 
@@ -427,7 +381,7 @@ form.addEventListener('submit', async e => {
     `Tidspunkt: ${new Date().toLocaleString('no-NO')}`,
     '',
     '── PRODUKT ──',
-    `Genser:     ${produkt}`,
+    `Genser:     Strobe Genser`,
     `Farge:      Sort`,
     `Størrelse:  ${size}`,
     `Antall:     ${qty}`,

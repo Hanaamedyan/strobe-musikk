@@ -89,32 +89,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;height:62px;display:flex;ali
   .burger{display:flex;}
 }
 
-/* ── PRODUCT PICKER ── */
-.product-picker{
-  position:relative;z-index:2;
-  display:flex;gap:0;
-  border-bottom:1px solid rgba(0,238,255,.1);
-  background:rgba(7,7,28,.9);
-  padding-top:62px;
-}
-.pp-btn{
-  flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;
-  padding:14px 20px;cursor:pointer;text-decoration:none;color:inherit;
-  border:none;background:none;
-  border-bottom:2px solid transparent;
-  transition:background .2s,border-color .2s;
-}
-.pp-btn:hover{background:rgba(0,238,255,.04);}
-.pp-btn.active{border-bottom-color:var(--cyan);background:rgba(0,238,255,.06);}
-.pp-label{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(239,240,255,.5);}
-.pp-btn.active .pp-label{color:var(--cyan);}
-.pp-name{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.06em;color:var(--white);}
-.pp-divider{width:1px;background:rgba(0,238,255,.1);align-self:stretch;margin:10px 0;}
-@media(max-width:600px){
-  .pp-name{font-size:.9rem;}
-  .pp-label{font-size:.5rem;}
-}
-
 /* ── MAIN ── */
 main{
   position:relative;z-index:2;flex:1;
@@ -389,19 +363,6 @@ main{
   <a href="https://www.tiktok.com/@strobemusikk" target="_blank" style="color:var(--cyan);">TikTok</a>
 </div>
 
-<!-- PRODUCT PICKER -->
-<div class="product-picker">
-  <a href="genser.html" class="pp-btn active">
-    <span class="pp-label">Produkt 01</span>
-    <span class="pp-name">Strobe Genser 1</span>
-  </a>
-  <div class="pp-divider"></div>
-  <a href="genser2.html" class="pp-btn">
-    <span class="pp-label">Produkt 02</span>
-    <span class="pp-name">Strobe Genser 2</span>
-  </a>
-</div>
-
 <main>
   <!-- LEFT — text -->
   <div class="text-pane">
@@ -417,7 +378,7 @@ main{
     </div>
 
     <div class="ctas">
-      <a href="checkout.html?produkt=1" class="btn-neon">Pre order →</a>
+      <a href="checkout.html" class="btn-neon">Pre order →</a>
       <a href="index.html" class="btn-border">Tilbake</a>
     </div>
 
