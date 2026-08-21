@@ -472,7 +472,7 @@ function loadTex(url){
 const texFront = loadTex('genser2-front.png');
 const texBack  = loadTex('genser2-back.png');
 
-const planeGeo = new THREE.PlaneGeometry(2.1, 2.39);
+const planeGeo = new THREE.PlaneGeometry(2.8, 1.96);
 const matFront = new THREE.MeshBasicMaterial({ map: texFront, transparent: true, alphaTest: 0.05, side: THREE.FrontSide });
 const matBack  = new THREE.MeshBasicMaterial({ map: texBack,  transparent: true, alphaTest: 0.05, side: THREE.FrontSide });
 
@@ -488,7 +488,7 @@ box.add(backPlane);
 box.position.y = 0.04;
 
 const glowMat = new THREE.MeshBasicMaterial({ color: 0xFF2A7F, transparent: true, opacity: 0.07, blending: THREE.AdditiveBlending, depthWrite: false });
-const glow = new THREE.Mesh(new THREE.BoxGeometry(2.24, 2.55, 0.32), glowMat);
+const glow = new THREE.Mesh(new THREE.BoxGeometry(2.95, 2.1, 0.32), glowMat);
 glow.position.copy(box.position);
 
 const sweaterGroup = new THREE.Group();
