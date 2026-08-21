@@ -15,12 +15,11 @@
 </script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>STROBE Genser — 3D</title>
-<meta name="description" content="Begrenset opplag av STROBE-genser. Roter i 3D for å se alle sider."/>
+<title>STROBE Cat Print Genser — 3D</title>
+<meta name="description" content="Begrenset opplag av STROBE Cat Print-genser. Roter i 3D for å se alle sider."/>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23030309'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Arial Black,sans-serif' font-size='17' font-weight='900' fill='%2300EEFF'%3ES%3C/text%3E%3C/svg%3E"/>
 <meta name="theme-color" content="#030309"/>
-
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{
@@ -44,8 +43,6 @@ a{text-decoration:none;color:inherit;}
 ::-webkit-scrollbar{width:2px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:var(--cyan);}
-
-/* Background atmosphere — radial gradients */
 body::before{
   content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background:
@@ -53,7 +50,6 @@ body::before{
     radial-gradient(ellipse 60% 50% at 30% 80%,rgba(157,64,255,.05) 0%,transparent 60%),
     radial-gradient(ellipse 60% 50% at 75% 20%,rgba(255,42,127,.04) 0%,transparent 60%);
 }
-/* Subtle grain */
 body::after{
   content:'';position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -109,11 +105,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;height:62px;display:flex;ali
 .pp-label{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(239,240,255,.5);}
 .pp-btn.active .pp-label{color:var(--cyan);}
 .pp-name{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.06em;color:var(--white);}
+.pp-btn.active .pp-name{color:var(--white);}
 .pp-divider{width:1px;background:rgba(0,238,255,.1);align-self:stretch;margin:10px 0;}
-@media(max-width:600px){
-  .pp-name{font-size:.9rem;}
-  .pp-label{font-size:.5rem;}
-}
 
 /* ── MAIN ── */
 main{
@@ -122,8 +115,6 @@ main{
   align-items:start;
   min-height:calc(100dvh - 62px);
 }
-
-/* Left side — text */
 .text-pane{
   display:flex;flex-direction:column;justify-content:center;
   padding:40px 48px 80px 56px;position:relative;
@@ -145,10 +136,7 @@ main{
   opacity:0;transform:translateY(24px);
   animation:up .9s .55s ease forwards;
 }
-.title em{
-  font-style:normal;color:var(--cyan);font-style:italic;
-  text-shadow:0 0 40px rgba(0,238,255,.5);
-}
+.title em{font-style:italic;color:var(--cyan);text-shadow:0 0 40px rgba(0,238,255,.5);}
 .desc{
   font-size:15px;font-weight:300;line-height:1.85;color:var(--muted);
   margin-top:28px;max-width:380px;
@@ -171,7 +159,6 @@ main{
 .spec-v{font-family:'DM Mono',monospace;font-size:.78rem;color:var(--white);letter-spacing:.04em;}
 .spec-v.cyan{color:var(--cyan);}
 .spec-v.pink{color:var(--pink);}
-
 .ctas{
   display:flex;gap:10px;flex-wrap:wrap;margin-top:36px;
   opacity:0;transform:translateY(14px);
@@ -186,10 +173,7 @@ main{
   box-shadow:0 0 18px rgba(0,238,255,.4),0 0 50px rgba(0,238,255,.12);
   transition:box-shadow .3s,transform .2s;
 }
-.btn-neon:hover{
-  box-shadow:0 0 30px rgba(0,238,255,.7),0 0 80px rgba(0,238,255,.22);
-  transform:translateY(-2px);
-}
+.btn-neon:hover{box-shadow:0 0 30px rgba(0,238,255,.7),0 0 80px rgba(0,238,255,.22);transform:translateY(-2px);}
 .btn-border{
   display:inline-flex;align-items:center;gap:8px;
   border:1px solid rgba(0,238,255,.3);color:var(--cyan);
@@ -198,13 +182,7 @@ main{
   padding:.85rem 1.7rem;border-radius:2px;background:none;cursor:pointer;
   transition:border-color .2s,box-shadow .2s,transform .2s;
 }
-.btn-border:hover{
-  border-color:var(--cyan);
-  box-shadow:0 0 20px rgba(0,238,255,.15);
-  transform:translateY(-2px);
-}
-
-/* Product description block — Stanley/Stella Changer 2.0 details */
+.btn-border:hover{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,238,255,.15);transform:translateY(-2px);}
 .product-desc{
   margin-top:44px;padding-top:28px;
   border-top:1px solid rgba(239,240,255,.2);
@@ -216,14 +194,8 @@ main{
 .pd-tag{font-family:'DM Mono',monospace;font-size:.58rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;}
 .pd-title{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.04em;color:var(--white);line-height:1;}
 .pd-list{list-style:none;display:flex;flex-direction:column;gap:10px;padding:0;margin:0;}
-.pd-list li{
-  position:relative;padding-left:20px;
-  font-size:13px;font-weight:300;color:rgba(239,240,255,.92);line-height:1.65;
-}
-.pd-list li::before{
-  content:'';position:absolute;left:0;top:.55em;
-  width:8px;height:1px;background:var(--cyan);box-shadow:0 0 6px rgba(0,238,255,.6);
-}
+.pd-list li{position:relative;padding-left:20px;font-size:13px;font-weight:300;color:rgba(239,240,255,.92);line-height:1.65;}
+.pd-list li::before{content:'';position:absolute;left:0;top:.55em;width:8px;height:1px;background:var(--cyan);box-shadow:0 0 6px rgba(0,238,255,.6);}
 .pd-foot{
   display:flex;align-items:flex-start;gap:10px;margin-top:22px;padding:14px 16px;
   background:rgba(255,42,127,.06);border:1px solid rgba(255,42,127,.18);border-radius:3px;
@@ -232,35 +204,25 @@ main{
 .pd-foot svg{width:18px;height:18px;color:var(--pink);flex-shrink:0;margin-top:1px;}
 .pd-foot strong{color:var(--pink);font-weight:600;}
 
-/* Right side — 3D canvas with Warp shader backdrop */
+/* Right side — 3D canvas */
 .canvas-pane{
   position:sticky;top:0;
   display:flex;align-items:center;justify-content:center;
   overflow:hidden;cursor:grab;
   height:100dvh;
-  background:#0f0f2a;
+  background:#111128;
 }
 .canvas-pane.dragging{cursor:grabbing;}
-#warp-mount{
-  position:absolute;inset:0;width:100%;height:100%;display:block;
-  z-index:0;pointer-events:none;
-}
+#warp-mount{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0;pointer-events:none;}
 #warp-mount canvas{display:block;width:100%;height:100%;}
-#sweater-canvas{
-  width:100%;height:100%;display:block;touch-action:none;
-  position:absolute;inset:0;z-index:4;
-}
-.cv-bg{
-  position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 30%,rgba(10,10,24,.55) 100%);
-}
+#sweater-canvas{width:100%;height:100%;display:block;touch-action:none;position:absolute;inset:0;z-index:4;}
+.cv-bg{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 30%,rgba(10,10,24,.55) 100%);}
 .cv-floor{
   position:absolute;bottom:8%;left:50%;transform:translateX(-50%);
   width:48%;height:60px;border-radius:50%;
   background:radial-gradient(ellipse,rgba(0,0,0,.45) 0%,rgba(0,0,0,0) 70%);
   filter:blur(14px);z-index:3;pointer-events:none;
 }
-@keyframes floorPulse{0%,100%{opacity:.7;transform:translateX(-50%) scale(1);}50%{opacity:1;transform:translateX(-50%) scale(1.08);}}
 .cv-hint{
   position:absolute;bottom:22px;left:50%;transform:translateX(-50%);z-index:5;
   display:flex;align-items:center;gap:10px;
@@ -277,43 +239,22 @@ main{
   padding:5px 12px;border:1px solid rgba(0,238,255,.3);border-radius:999px;
   background:rgba(0,238,255,.06);
 }
-
 @keyframes up{to{opacity:1;transform:none;}}
 
-/* Size table */
 .size-table-wrap{overflow-x:auto;margin-top:4px;}
-.size-table{
-  width:100%;border-collapse:collapse;
-  font-family:'DM Mono',monospace;font-size:.62rem;
-}
-.size-table th{
-  padding:8px 10px;text-align:center;
-  color:var(--cyan);letter-spacing:.1em;text-transform:uppercase;
-  border-bottom:1px solid rgba(0,238,255,.15);
-  font-weight:500;white-space:nowrap;
-}
+.size-table{width:100%;border-collapse:collapse;font-family:'DM Mono',monospace;font-size:.62rem;}
+.size-table th{padding:8px 10px;text-align:center;color:var(--cyan);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid rgba(0,238,255,.15);font-weight:500;white-space:nowrap;}
 .size-table th:first-child{text-align:left;}
-.size-table td{
-  padding:9px 10px;text-align:center;
-  color:rgba(239,240,255,.75);
-  border-bottom:1px solid rgba(239,240,255,.04);
-}
-.size-table td:first-child{
-  color:var(--white);font-weight:600;text-align:left;letter-spacing:.08em;
-}
+.size-table td{padding:9px 10px;text-align:center;color:rgba(239,240,255,.75);border-bottom:1px solid rgba(239,240,255,.04);}
+.size-table td:first-child{color:var(--white);font-weight:600;text-align:left;letter-spacing:.08em;}
 .size-table tbody tr:nth-child(odd){background:rgba(0,238,255,.02);}
 .size-table tbody tr:hover{background:rgba(0,238,255,.05);}
 
-/* RESPONSIVE */
 @media(max-width:980px){
-  main{grid-template-columns:1fr;grid-template-rows:auto auto;padding-top:62px;}
+  main{grid-template-columns:1fr;grid-template-rows:auto auto;}
   .canvas-pane{position:relative;top:auto;height:55vh;min-height:320px;order:-1;cursor:default;}
   .canvas-pane.dragging{cursor:default;}
-  .text-pane{
-    order:1;width:100%;box-sizing:border-box;
-    padding:24px 20px 40px;
-    text-align:center;align-items:center;overflow-x:hidden;
-  }
+  .text-pane{order:1;width:100%;box-sizing:border-box;padding:24px 20px 40px;text-align:center;align-items:center;overflow-x:hidden;}
   .eyebrow{margin-left:auto;margin-right:auto;}
   .desc{margin-left:auto;margin-right:auto;max-width:100%;}
   .specs{align-items:stretch;width:100%;max-width:400px;}
@@ -326,7 +267,6 @@ main{
   .size-table{font-size:.55rem;min-width:360px;}
   .size-table th,.size-table td{padding:6px 7px;}
 }
-
 @media(max-width:600px){
   .text-pane{padding:20px 16px 36px;}
   .title{font-size:clamp(44px,11vw,72px);}
@@ -335,8 +275,9 @@ main{
   .canvas-pane{height:48vh;min-height:280px;}
   .cv-corner-tag{top:12px;right:12px;font-size:.48rem;padding:4px 8px;}
   .btn-neon,.btn-border{padding:.75rem 1.2rem;font-size:.58rem;}
+  .pp-name{font-size:.9rem;}
+  .pp-label{font-size:.5rem;}
 }
-
 @media(max-width:420px){
   .title{font-size:clamp(40px,13vw,60px);}
   .spec-v{font-size:.68rem;}
@@ -391,12 +332,12 @@ main{
 
 <!-- PRODUCT PICKER -->
 <div class="product-picker">
-  <a href="genser.html" class="pp-btn active">
+  <a href="genser.html" class="pp-btn">
     <span class="pp-label">Produkt 01</span>
     <span class="pp-name">Logo Genser</span>
   </a>
   <div class="pp-divider"></div>
-  <a href="genser2.html" class="pp-btn">
+  <a href="genser2.html" class="pp-btn active">
     <span class="pp-label">Produkt 02</span>
     <span class="pp-name">Cat Print Genser</span>
   </a>
@@ -406,8 +347,8 @@ main{
   <!-- LEFT — text -->
   <div class="text-pane">
     <div class="eyebrow">Merch · Begrenset opplag</div>
-    <h1 class="title">Strobe<br/><em>genser.</em></h1>
-    <p class="desc">Sort genser med STROBE-logo på brystet og signaturprint på ryggen. 3D-visning — dra for å rotere, eller la den spinne.</p>
+    <h1 class="title">Cat<br/><em>print.</em></h1>
+    <p class="desc">Sort genser med STROBE-logo på brystet og eksklusivt cat print-grafisk på ryggen. 3D-visning — dra for å rotere, eller la den spinne.</p>
 
     <div class="specs">
       <div class="spec"><span class="spec-l">Materiale</span><span class="spec-v">50% bomull / 50% polyester</span></div>
@@ -418,10 +359,9 @@ main{
 
     <div class="ctas">
       <a href="checkout.html" class="btn-neon">Pre order →</a>
-      <a href="index.html" class="btn-border">Tilbake</a>
+      <a href="genser.html" class="btn-border">Se logo genser</a>
     </div>
 
-    <!-- PRODUKTBESKRIVELSE -->
     <div class="product-desc">
       <div class="pd-head">
         <div class="pd-tag">— Produktbeskrivelse</div>
@@ -431,7 +371,7 @@ main{
         <li>Klassisk passform unisex med rund hals</li>
         <li>50% bomull / 50% polyester</li>
         <li>Tilgjengelig i størrelser S, M, L, XL, 2XL og 3XL</li>
-        <li>STROBE-logo på brystet, signaturprint på ryggen</li>
+        <li>STROBE-logo på brystet, eksklusivt cat print på ryggen</li>
       </ul>
 
       <div class="pd-tag" style="margin-top:22px;margin-bottom:10px;">— Størrelsesguide (cm)</div>
@@ -474,40 +414,22 @@ main{
   </div>
 </main>
 
-<!-- ━━━━━ Paper Design Warp (real component via React+ESM CDN) ━━━━━ -->
 <script type="module">
 import React from 'https://esm.sh/react@18.3.1';
 import ReactDOM from 'https://esm.sh/react-dom@18.3.1/client';
 import { Warp } from 'https://esm.sh/@paper-design/shaders-react@0.0.50?deps=react@18.3.1,react-dom@18.3.1';
-
 const mount = document.getElementById('warp-mount');
-if (mount) {
+if(mount){
   const root = ReactDOM.createRoot(mount);
-  root.render(
-    React.createElement(Warp, {
-      style: { width: '100%', height: '100%' },
-      proportion: 0.45,
-      softness: 1,
-      distortion: 0.25,
-      swirl: 0.8,
-      swirlIterations: 10,
-      shape: 'checks',
-      shapeScale: 0.1,
-      scale: 1,
-      rotation: 0,
-      speed: 1,
-      colors: [
-        'hsl(203, 100%, 62%)',
-        'hsl(255, 100%, 72%)',
-        'hsl(158, 99%, 59%)',
-        'hsl(264, 100%, 61%)'
-      ]
-    })
-  );
+  root.render(React.createElement(Warp,{
+    style:{width:'100%',height:'100%'},
+    proportion:0.45,softness:1,distortion:0.25,swirl:0.8,swirlIterations:10,
+    shape:'checks',shapeScale:0.1,scale:1,rotation:0,speed:1,
+    colors:['hsl(203,100%,62%)','hsl(255,100%,72%)','hsl(158,99%,59%)','hsl(264,100%,61%)']
+  }));
 }
 </script>
 
-<!-- ━━━━━ Three.js — Sweater 3D ━━━━━ -->
 <script type="importmap">
 { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
 </script>
@@ -527,78 +449,45 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 function resize(){
-  let w = wrap.clientWidth;
-  let h = wrap.clientHeight;
-  // Fallback for cases where layout hasn't computed dimensions yet
-  if (w < 50 || h < 50) {
-    w = Math.max(w, window.innerWidth * 0.5);
-    h = Math.max(h, window.innerHeight * 0.8);
-  }
+  let w = wrap.clientWidth, h = wrap.clientHeight;
+  if(w < 50 || h < 50){ w = Math.max(w, window.innerWidth*0.5); h = Math.max(h, window.innerHeight*0.8); }
   renderer.setSize(w, h, false);
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
 }
 window.addEventListener('resize', resize);
 resize();
-// Re-resize a few times after load to catch layout settling
 setTimeout(resize, 100);
 setTimeout(resize, 500);
 window.addEventListener('load', resize);
 
-// ─────────────────────────────────────────────────────────
-//  Textures — 4 sides of the sweater
-// ─────────────────────────────────────────────────────────
 const loader = new THREE.TextureLoader();
 function loadTex(url){
-  const t = loader.load(
-    url,
-    (tex) => { const short = url.startsWith('data:')?'<inline>':url; console.log('✓ loaded:', short, tex.image.width + '×' + tex.image.height); },
-    undefined,
-    (err) => { const short = url.startsWith('data:')?'<inline>':url; console.error('✗ failed:', short, err); }
-  );
+  const t = loader.load(url, undefined, undefined, e => console.error('✗ failed:', url, e));
   t.colorSpace = THREE.SRGBColorSpace;
   t.anisotropy = renderer.capabilities.getMaxAnisotropy();
   return t;
 }
-// Inlined base64 image data — works regardless of file:// CORS
-const FRONT_URI = 'genser-front.png';
-const BACK_URI = 'genser-back.png';
-const texFront = loadTex(FRONT_URI);
-const texBack  = loadTex(BACK_URI);
 
-// ─────────────────────────────────────────────────────────
-//  Two flat planes back-to-back — sweater silhouette on transparent bg
-//   Plane facing +Z carries the FRONT cutout
-//   Plane rotated 180° around Y carries the BACK cutout
-//   FrontSide culling auto-hides the wrong plane during rotation
-// ─────────────────────────────────────────────────────────
+const texFront = loadTex('genser2-front.png');
+const texBack  = loadTex('genser2-back.png');
+
 const planeGeo = new THREE.PlaneGeometry(2.1, 2.39);
-
-const matFront = new THREE.MeshBasicMaterial({
-  map: texFront, transparent: true, alphaTest: 0.05, side: THREE.FrontSide
-});
-const matBack = new THREE.MeshBasicMaterial({
-  map: texBack, transparent: true, alphaTest: 0.05, side: THREE.FrontSide
-});
+const matFront = new THREE.MeshBasicMaterial({ map: texFront, transparent: true, alphaTest: 0.05, side: THREE.FrontSide });
+const matBack  = new THREE.MeshBasicMaterial({ map: texBack,  transparent: true, alphaTest: 0.05, side: THREE.FrontSide });
 
 const frontPlane = new THREE.Mesh(planeGeo, matFront);
 frontPlane.position.z = 0.006;
-
 const backPlane = new THREE.Mesh(planeGeo, matBack);
 backPlane.rotation.y = Math.PI;
 backPlane.position.z = -0.006;
 
-// Wrap in a parent group named `box` so the rest of the code (sweaterGroup, glow) still works
 const box = new THREE.Group();
 box.add(frontPlane);
 box.add(backPlane);
 box.position.y = 0.04;
 
-// Subtle ambient glow rim — second slightly bigger box behind, additive
-const glowMat = new THREE.MeshBasicMaterial({
-  color: 0x00EEFF, transparent: true, opacity: 0.08,
-  blending: THREE.AdditiveBlending, depthWrite: false
-});
+const glowMat = new THREE.MeshBasicMaterial({ color: 0xFF2A7F, transparent: true, opacity: 0.07, blending: THREE.AdditiveBlending, depthWrite: false });
 const glow = new THREE.Mesh(new THREE.BoxGeometry(2.24, 2.55, 0.32), glowMat);
 glow.position.copy(box.position);
 
@@ -606,39 +495,14 @@ const sweaterGroup = new THREE.Group();
 sweaterGroup.add(box);
 sweaterGroup.add(glow);
 scene.add(sweaterGroup);
-
-// Slight initial tilt for character
 sweaterGroup.rotation.x = -0.06;
 
-// ─────────────────────────────────────────────────────────
-//  Interaction — drag-to-rotate + auto-spin + inertia
-// ─────────────────────────────────────────────────────────
-let isDown = false;
-let lastX = 0;
-let dragVelocity = 0;
-let autoSpin = 0.0035;  // continuous baseline spin
-let userInput = 0;       // accumulated drag delta this frame
-let velocity = 0;        // applied per-frame angular velocity (eased)
+let isDown = false, lastX = 0, dragVelocity = 0, autoSpin = 0.0035, userInput = 0, velocity = 0;
 
-function pointerDown(e){
-  isDown = true;
-  lastX = e.touches ? e.touches[0].clientX : e.clientX;
-  dragVelocity = 0;
-  wrap.classList.add('dragging');
-}
-function pointerMove(e){
-  if(!isDown) return;
-  const x = e.touches ? e.touches[0].clientX : e.clientX;
-  const dx = x - lastX;
-  userInput += dx * 0.0065;
-  dragVelocity = dx * 0.0065;
-  lastX = x;
-  if(e.cancelable) e.preventDefault();
-}
-function pointerUp(){
-  isDown = false;
-  wrap.classList.remove('dragging');
-}
+function pointerDown(e){ isDown=true; lastX=e.touches?e.touches[0].clientX:e.clientX; dragVelocity=0; wrap.classList.add('dragging'); }
+function pointerMove(e){ if(!isDown)return; const x=e.touches?e.touches[0].clientX:e.clientX; const dx=x-lastX; userInput+=dx*0.0065; dragVelocity=dx*0.0065; lastX=x; if(e.cancelable)e.preventDefault(); }
+function pointerUp(){ isDown=false; wrap.classList.remove('dragging'); }
+
 wrap.addEventListener('mousedown', pointerDown);
 window.addEventListener('mousemove', pointerMove);
 window.addEventListener('mouseup', pointerUp);
@@ -646,36 +510,16 @@ wrap.addEventListener('touchstart', pointerDown, { passive: true });
 wrap.addEventListener('touchmove', pointerMove, { passive: false });
 wrap.addEventListener('touchend', pointerUp);
 
-// ─────────────────────────────────────────────────────────
-//  Animation loop
-// ─────────────────────────────────────────────────────────
 const clock = new THREE.Clock();
 function tick(){
   const t = clock.getElapsedTime();
-
-  // Compute target velocity — user input dominates while dragging,
-  // then decays back to autoSpin baseline
-  let target;
-  if(isDown){
-    target = userInput;        // direct mapping
-  } else {
-    // Coast down from drag inertia, then resume autoSpin
-    target = autoSpin + dragVelocity;
-  }
-  // Smoothly approach target
+  let target = isDown ? userInput : autoSpin + dragVelocity;
   velocity += (target - velocity) * 0.18;
   sweaterGroup.rotation.y += velocity;
-
-  // Decay drag inertia + reset userInput
   dragVelocity *= 0.93;
   userInput = 0;
-
-  // Subtle vertical bob for life
   sweaterGroup.position.y = Math.sin(t * 0.9) * 0.025;
-
-  // Glow opacity pulse synced with bob
-  glow.material.opacity = 0.05 + 0.035 * (0.5 + 0.5 * Math.sin(t * 1.2));
-
+  glow.material.opacity = 0.04 + 0.03 * (0.5 + 0.5 * Math.sin(t * 1.2));
   renderer.render(scene, camera);
   requestAnimationFrame(tick);
 }
@@ -686,57 +530,11 @@ tick();
   <span style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.12em;color:var(--white);opacity:.4;">STROBE</span>
   <span style="font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(239,240,255,.4);">© 2026 Strobe · Alle rettigheter forbeholdt</span>
   <a href="personvern.html" style="font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(239,240,255,.45);transition:color .2s;" onmouseover="this.style.color='#00EEFF'" onmouseout="this.style.color='rgba(239,240,255,.45)'">Personvern</a>
-  <span style="font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;color:rgba(0,238,255,.18);">BYGGET AV <a href="https://hanaamedyan.github.io/yamsas/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 16px;text-decoration:none;"><svg width="18" height="22" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="10" y1="12" x2="2" y2="2" stroke="white" stroke-width="2.2" stroke-linecap="round"/><line x1="10" y1="12" x2="18" y2="2" stroke="white" stroke-width="2.2" stroke-linecap="round"/><line x1="10" y1="12" x2="10" y2="22" stroke="white" stroke-width="2.2" stroke-linecap="round"/><circle cx="10" cy="12" r="2.8" fill="#C8A660"/></svg><div style="line-height:1.2;"><div style="font-size:13px;font-weight:800;color:#FFFFFF;letter-spacing:-.2px;line-height:1.1;">YAMS <span style="font-weight:400;font-size:11px;color:rgba(255,255,255,.5);">AS</span></div><div style="font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.38);margin-top:2px;">Website Solutions</div></div></a></span>
 </footer>
 
 <script>
 document.getElementById('burger').addEventListener('click',function(){this.classList.toggle('open');document.getElementById('mob-nav').classList.toggle('open');});
 document.querySelectorAll('.mob-nav a').forEach(a=>a.addEventListener('click',()=>{document.getElementById('burger').classList.remove('open');document.getElementById('mob-nav').classList.remove('open');}));
-</script>
-
-<!-- COOKIE BANNER -->
-<style>
-#ck{position:fixed;bottom:0;left:0;right:0;z-index:99999;display:none;background:#07071C;border-top:1px solid rgba(0,238,255,.18);box-shadow:0 -12px 48px rgba(0,0,0,.7);}
-#ck.show{display:block;animation:ck-up .55s cubic-bezier(.16,1,.3,1);}
-@keyframes ck-up{from{transform:translateY(100%);}to{transform:translateY(0);}}
-#ck-in{max-width:1280px;margin:0 auto;padding:20px 44px;display:flex;align-items:center;gap:28px;flex-wrap:wrap;justify-content:space-between;}
-#ck-ttl{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:.1em;color:#00EEFF;margin-bottom:4px;}
-#ck-txt{font-family:'Space Grotesk',sans-serif;font-size:.82rem;line-height:1.6;color:rgba(239,240,255,.6);max-width:600px;}
-#ck-txt a{color:#00EEFF;text-decoration:none;}
-#ck-txt a:hover{opacity:.7;}
-#ck-btns{display:flex;gap:10px;flex-shrink:0;}
-.ck-yes{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;padding:11px 26px;border:none;border-radius:6px;cursor:pointer;background:#00EEFF;color:#030309;font-weight:500;transition:opacity .2s;}
-.ck-yes:hover{opacity:.82;}
-.ck-no{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;padding:11px 22px;border:1px solid rgba(239,240,255,.2);border-radius:6px;cursor:pointer;background:transparent;color:rgba(239,240,255,.55);transition:border-color .2s,color .2s;}
-.ck-no:hover{border-color:rgba(239,240,255,.5);color:rgba(239,240,255,.9);}
-@media(max-width:768px){#ck-in{padding:18px 18px 24px;flex-direction:column;align-items:flex-start;gap:14px;}#ck-btns{width:100%;}.ck-yes,.ck-no{flex:1;text-align:center;padding:12px 10px;}}
-</style>
-<div id="ck">
-  <div id="ck-in">
-    <div>
-      <div id="ck-ttl">COOKIES</div>
-      <p id="ck-txt">Vi bruker informasjonskapsler til statistikk via Google Analytics. Norsk ekomlov krever ditt samtykke. Les mer i vår <a href="personvern.html">personvernerklæring</a>.</p>
-    </div>
-    <div id="ck-btns">
-      <button class="ck-yes" onclick="ckAccept()">Godta</button>
-      <button class="ck-no" onclick="ckDecline()">Avslå</button>
-    </div>
-  </div>
-</div>
-<script>
-(function(){if(!localStorage.getItem('strobe_cookie_consent'))document.getElementById('ck').classList.add('show');})();
-function ckAccept(){
-  localStorage.setItem('strobe_cookie_consent','accepted');
-  document.getElementById('ck').style.display='none';
-  var s=document.createElement('script');s.async=true;
-  s.src='https://www.googletagmanager.com/gtag/js?id=G-RTNNBWD6NC';
-  document.head.appendChild(s);
-  s.onload=function(){gtag('js',new Date());gtag('config','G-RTNNBWD6NC');};
-}
-function ckDecline(){
-  localStorage.setItem('strobe_cookie_consent','declined');
-  document.getElementById('ck').style.display='none';
-}
 </script>
 </body>
 </html>
