@@ -415,7 +415,7 @@ form.addEventListener('submit', async e => {
 
   // Set fields Web3Forms uses
   fd.append('access_key', WEB3_KEY);
-  fd.append('subject', `🛒 Ny STROBE-bestilling — ${orderNo} (${data.firstname || ''} ${data.lastname || ''})`);
+  fd.append('subject', `🛒 Ny bestilling — ${produkt} — ${orderNo} (${data.firstname || ''} ${data.lastname || ''})`);
   fd.append('from_name', 'STROBE Merch');
   fd.append('replyto', data.email || '');
 
@@ -426,7 +426,8 @@ form.addEventListener('submit', async e => {
     `Tidspunkt: ${new Date().toLocaleString('no-NO')}`,
     '',
     '── PRODUKT ──',
-    `${produkt} (sort)`,
+    `Genser:     ${produkt}`,
+    `Farge:      Sort`,
     `Størrelse:  ${size}`,
     `Antall:     ${qty}`,
     `Pris/stk:   ${UNIT} kr`,
