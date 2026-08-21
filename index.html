@@ -271,13 +271,6 @@ nav.solid{
   transform:translateY(-2px);
 }
 .btn-pink-hero svg{width:14px;height:14px;}
-.hero-scroll-ind{
-  display:flex;flex-direction:column;align-items:center;gap:5px;
-  font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--dim);
-}
-.scroll-bar{width:1px;height:44px;background:linear-gradient(to bottom,rgba(0,238,255,.5),transparent);animation:sb 2s ease-in-out infinite;}
-@keyframes sb{0%,100%{opacity:1}50%{opacity:.25}}
 @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
 
 /* ── TICKER ── */
@@ -704,7 +697,6 @@ footer{
   .hero-desc{font-size:.85rem;line-height:1.75;max-width:100%;}
   .hero-ctas{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;}
   .hero-ctas a{justify-content:center;font-size:.58rem;padding:.65rem .8rem;}
-  .hero-scroll-ind{display:none;}
 
   /* Sections */
   .sek{padding:56px 18px;}
@@ -898,10 +890,6 @@ footer{
         <svg fill="currentColor" viewBox="0 0 24 24" style="width:13px;height:13px;"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.24 8.24 0 004.84 1.56V6.79a4.85 4.85 0 01-1.07-.1z"/></svg>
         TikTok
       </a>
-    </div>
-    <div class="hero-scroll-ind">
-      <div class="scroll-bar"></div>
-      <span>Scroll</span>
     </div>
   </div>
 </section>
