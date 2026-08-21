@@ -415,6 +415,7 @@ form.addEventListener('submit', async e => {
 
   // Set fields Web3Forms uses
   fd.append('access_key', WEB3_KEY);
+  fd.append('to', 'yamsasno@gmail.com');
   fd.append('subject', `🛒 Ny bestilling — ${produkt} — ${orderNo} (${data.firstname || ''} ${data.lastname || ''})`);
   fd.append('from_name', 'STROBE Merch');
   fd.append('replyto', data.email || '');
