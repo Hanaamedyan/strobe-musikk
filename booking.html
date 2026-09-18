@@ -285,13 +285,14 @@ nav.solid{background:rgba(3,3,9,.97);backdrop-filter:blur(20px);border-bottom:1p
 .steps{
   display:grid;grid-template-columns:repeat(4,1fr);
   gap:2px;margin-top:48px;
-  background:rgba(157,64,255,.12);
-  border:1px solid rgba(157,64,255,.15);
+  background:rgba(157,64,255,.18);
+  border:1px solid rgba(157,64,255,.22);
   border-radius:4px;overflow:hidden;
+  box-shadow:0 0 60px rgba(157,64,255,.08);
 }
 .step{
-  background:var(--bg);
-  padding:40px 28px;
+  background:#050514;
+  padding:44px 32px;
   position:relative;
   overflow:hidden;
   transition:background .4s;
@@ -306,42 +307,44 @@ nav.solid{background:rgba(3,3,9,.97);backdrop-filter:blur(20px);border-bottom:1p
 .step:hover::before{opacity:1;}
 .step-icon{
   display:flex;align-items:center;justify-content:center;
-  width:44px;height:44px;border-radius:10px;
-  border:1px solid color-mix(in srgb,var(--step-color,#9D40FF) 35%,transparent);
-  background:color-mix(in srgb,var(--step-color,#9D40FF) 10%,transparent);
+  width:48px;height:48px;border-radius:10px;
+  border:1px solid color-mix(in srgb,var(--step-color,#9D40FF) 55%,transparent);
+  background:color-mix(in srgb,var(--step-color,#9D40FF) 18%,transparent);
   color:var(--step-color,#9D40FF);
-  margin-bottom:16px;opacity:.55;
-  transition:opacity .4s,box-shadow .4s,transform .4s,background .4s;
+  margin-bottom:18px;
+  box-shadow:0 0 16px color-mix(in srgb,var(--step-color,#9D40FF) 30%,transparent);
+  transition:box-shadow .4s,transform .4s,background .4s;
 }
 .step:hover .step-icon{
-  opacity:1;transform:translateY(-3px);
-  background:color-mix(in srgb,var(--step-color,#9D40FF) 20%,transparent);
-  box-shadow:0 0 22px color-mix(in srgb,var(--step-color,#9D40FF) 45%,transparent);
+  transform:translateY(-3px);
+  background:color-mix(in srgb,var(--step-color,#9D40FF) 28%,transparent);
+  box-shadow:0 0 32px color-mix(in srgb,var(--step-color,#9D40FF) 60%,transparent);
 }
 .step-n{
   font-family:'Bebas Neue',sans-serif;font-size:3.8rem;
   line-height:1;margin-bottom:10px;
   color:var(--step-color,#9D40FF);
-  opacity:.2;transition:opacity .4s,text-shadow .4s;
-  text-shadow:none;
+  opacity:.75;
+  text-shadow:0 0 20px var(--step-color,#9D40FF);
+  transition:opacity .4s,text-shadow .4s;
 }
 .step:hover .step-n{
-  opacity:.9;
-  text-shadow:0 0 30px var(--step-color,#9D40FF);
+  opacity:1;
+  text-shadow:0 0 40px var(--step-color,#9D40FF),0 0 80px color-mix(in srgb,var(--step-color,#9D40FF) 40%,transparent);
 }
 .step-title{
   font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600;
   color:var(--white);margin-bottom:8px;transition:color .3s;
 }
 .step:hover .step-title{color:var(--step-color,#9D40FF);}
-.step-desc{font-size:.82rem;font-weight:300;color:var(--muted);line-height:1.8;}
+.step-desc{font-size:.82rem;font-weight:300;color:rgba(239,240,255,.65);line-height:1.8;}
 .step-connector{
   position:absolute;top:50%;right:-1px;
   width:2px;height:36px;
   background:linear-gradient(to bottom,transparent,var(--step-color,#9D40FF),transparent);
   transform:translateY(-50%);z-index:1;
-  box-shadow:0 0 10px var(--step-color,#9D40FF);
-  opacity:.5;
+  box-shadow:0 0 12px var(--step-color,#9D40FF);
+  opacity:.8;
 }
 
 /* ── BOOKING FORM ── */
