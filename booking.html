@@ -546,7 +546,7 @@ footer{background:var(--bg2);padding:44px 44px 26px;border-top:1px solid rgba(23
 
     <div class="form-wrap rev d2">
       <div id="booking-form-inner">
-        <form id="bform" onsubmit="handleBooking(event)">
+        <form id="bform" onsubmit="handleBooking(event)" novalidate>
           <div class="form-grid">
             <div class="form-group">
               <label class="form-label">Navn *</label>
@@ -767,12 +767,35 @@ document.querySelectorAll('.faq-q').forEach(btn=>{
 });
 
 /* FORM */
-function handleBooking(e){
+async function handleBooking(e){
   e.preventDefault();
   const form=document.getElementById('bform');
+  const btn=form.querySelector('.form-submit');
   const success=document.getElementById('form-success');
-  form.style.display='none';
-  success.classList.add('show');
+  btn.textContent='Sender...';
+  btn.style.opacity='.7';
+  btn.disabled=true;
+  try{
+    const res=await fetch('https://formspree.io/wekva.marketing@gmail.com',{
+      method:'POST',
+      body:new FormData(form),
+      headers:{Accept:'application/json'}
+    });
+    if(res.ok){
+      form.style.display='none';
+      success.classList.add('show');
+    } else {
+      btn.textContent='Send bookingforespørsel';
+      btn.style.opacity='';
+      btn.disabled=false;
+      alert('Noe gikk galt. Ring oss på +47 99 10 99 43 eller send e-post direkte.');
+    }
+  } catch(err){
+    btn.textContent='Send bookingforespørsel';
+    btn.style.opacity='';
+    btn.disabled=false;
+    alert('Noe gikk galt. Ring oss på +47 99 10 99 43 eller send e-post direkte.');
+  }
 }
 </script>
 </body>
