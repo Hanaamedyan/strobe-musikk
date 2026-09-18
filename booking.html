@@ -776,12 +776,13 @@ async function handleBooking(e){
   btn.style.opacity='.7';
   btn.disabled=true;
   try{
-    const res=await fetch('https://formspree.io/wekva.marketing@gmail.com',{
+    const res=await fetch('https://formsubmit.co/ajax/wekva.marketing@gmail.com',{
       method:'POST',
       body:new FormData(form),
       headers:{Accept:'application/json'}
     });
-    if(res.ok){
+    const json=await res.json();
+    if(res.ok && json.success!=='false'){
       form.style.display='none';
       success.classList.add('show');
     } else {
