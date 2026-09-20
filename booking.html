@@ -684,7 +684,12 @@ footer{background:var(--bg2);padding:44px 44px 26px;border-top:1px solid rgba(23
 
     <div class="form-wrap rev d2">
       <div id="booking-form-inner">
-        <form id="bform" onsubmit="handleBooking(event)" novalidate>
+        <form id="bform" action="https://formsubmit.co/wekva.marketing@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="Ny bookingforespørsel — Strobe"/>
+          <input type="hidden" name="_captcha" value="false"/>
+          <input type="hidden" name="_next" value="https://strobemusikk.com/booking.html?sent=1"/>
+          <input type="hidden" name="_template" value="table"/>
+          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off"/>
           <div class="form-grid">
             <div class="form-group">
               <label class="form-label">Navn *</label>
@@ -739,7 +744,7 @@ footer{background:var(--bg2);padding:44px 44px 26px;border-top:1px solid rgba(23
               <textarea name="melding" placeholder="Fortell oss om arrangementet, stemningen du ønsker, og andre detaljer som er nyttige for oss å vite..."></textarea>
             </div>
           </div>
-          <button type="submit" class="form-submit">
+          <button type="submit" class="form-submit" id="bsubmit">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
             Send bookingforespørsel
           </button>
@@ -904,38 +909,27 @@ document.querySelectorAll('.faq-q').forEach(btn=>{
   });
 });
 
-/* FORM */
-async function handleBooking(e){
-  e.preventDefault();
-  const form=document.getElementById('bform');
-  const btn=form.querySelector('.form-submit');
-  const success=document.getElementById('form-success');
-  btn.textContent='Sender...';
-  btn.style.opacity='.7';
-  btn.disabled=true;
-  try{
-    const res=await fetch('https://formsubmit.co/ajax/wekva.marketing@gmail.com',{
-      method:'POST',
-      body:new FormData(form),
-      headers:{Accept:'application/json'}
-    });
-    const json=await res.json();
-    if(res.ok && json.success!=='false'){
-      form.style.display='none';
-      success.classList.add('show');
-    } else {
-      btn.textContent='Send bookingforespørsel';
-      btn.style.opacity='';
-      btn.disabled=false;
-      alert('Noe gikk galt. Ring oss på +47 99 10 99 43 eller send e-post direkte.');
-    }
-  } catch(err){
-    btn.textContent='Send bookingforespørsel';
-    btn.style.opacity='';
-    btn.disabled=false;
-    alert('Noe gikk galt. Ring oss på +47 99 10 99 43 eller send e-post direkte.');
+/* FORM — show success state if redirected back with ?sent=1 */
+(function(){
+  if(new URLSearchParams(location.search).get('sent')==='1'){
+    const form=document.getElementById('bform');
+    const success=document.getElementById('form-success');
+    if(form) form.style.display='none';
+    if(success) success.classList.add('show');
+    document.getElementById('booking-form').scrollIntoView({behavior:'smooth',block:'start'});
+    history.replaceState(null,'',location.pathname);
   }
-}
+  /* Show loading state on submit */
+  const btn=document.getElementById('bsubmit');
+  const form=document.getElementById('bform');
+  if(form && btn){
+    form.addEventListener('submit',function(){
+      btn.disabled=true;
+      btn.style.opacity='.7';
+      btn.innerHTML='Sender...';
+    });
+  }
+})();
 </script>
 </body>
 </html>
