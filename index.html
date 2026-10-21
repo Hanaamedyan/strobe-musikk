@@ -740,6 +740,61 @@ footer{
   .album-scroll{cursor:default;}
   .album-scroll.dragging{cursor:default;}
 }
+/* ── RELEASEPARTY COUNTDOWN ── */
+.rp-banner{
+  position:relative;z-index:1;overflow:hidden;
+  padding:44px 44px;
+  background:linear-gradient(110deg,rgba(255,42,127,.14) 0%,rgba(157,64,255,.12) 50%,rgba(0,238,255,.12) 100%),var(--bg);
+  border-top:1px solid rgba(255,42,127,.25);
+  border-bottom:1px solid rgba(0,238,255,.2);
+}
+.rp-inner{
+  max-width:1280px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;
+}
+.rp-eyebrow{
+  font-family:'DM Mono',monospace;font-size:.62rem;font-weight:500;
+  letter-spacing:.25em;text-transform:uppercase;color:var(--pink);
+  display:flex;align-items:center;gap:10px;margin-bottom:8px;
+}
+.rp-pulse{width:7px;height:7px;border-radius:50%;background:var(--pink);box-shadow:0 0 10px var(--pink);animation:rpPulse 1.4s ease-in-out infinite;}
+@keyframes rpPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.35;transform:scale(.7);}}
+.rp-title{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,5.5vw,72px);
+  line-height:.95;letter-spacing:.04em;color:var(--white);
+  text-shadow:0 0 24px rgba(255,42,127,.35);
+}
+.rp-meta{
+  font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dim);margin-top:10px;
+}
+.rp-meta b{color:var(--cyan);font-weight:500;}
+.rp-count{display:flex;gap:12px;}
+.rp-unit{
+  min-width:84px;padding:14px 10px 10px;text-align:center;
+  border:1px solid rgba(0,238,255,.22);border-radius:10px;
+  background:rgba(3,3,9,.55);backdrop-filter:blur(6px);
+}
+.rp-num{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,4.5vw,56px);
+  line-height:1;color:var(--cyan);text-shadow:0 0 16px rgba(0,238,255,.45);
+  font-variant-numeric:tabular-nums;
+}
+.rp-lbl{
+  font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dim);margin-top:4px;
+}
+.rp-today{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,5vw,64px);
+  color:var(--pink);text-shadow:0 0 22px rgba(255,42,127,.55);letter-spacing:.06em;
+}
+@media(max-width:768px){
+  .rp-banner{padding:36px 18px;}
+  .rp-inner{flex-direction:column;align-items:flex-start;gap:22px;}
+  .rp-count{width:100%;gap:8px;}
+  .rp-unit{flex:1;min-width:0;padding:12px 4px 8px;}
+  .rp-meta{font-size:.62rem;}
+}
 @media(max-width:480px){
   .hero-ctas{grid-template-columns:1fr 1fr;}
   .hero-ctas a{font-size:.55rem;padding:.6rem .6rem;}
@@ -873,6 +928,44 @@ footer{
     <div class="t-item"><span>@STROBE_MUSIKK</span><div class="t-dot"></div></div>
   </div>
 </div>
+
+<!-- RELEASEPARTY COUNTDOWN -->
+<section class="rp-banner" id="releaseparty" aria-label="Nedtelling til releaseparty">
+  <div class="rp-inner">
+    <div class="rp-text">
+      <div class="rp-eyebrow"><span class="rp-pulse"></span>Releaseparty</div>
+      <h2 class="rp-title">Releaseparty på ILA</h2>
+      <p class="rp-meta"><b>28. november</b> · ILA · Trondheim</p>
+    </div>
+    <div class="rp-count" id="rp-count">
+      <div class="rp-unit"><div class="rp-num" id="rp-d">--</div><div class="rp-lbl">Dager</div></div>
+      <div class="rp-unit"><div class="rp-num" id="rp-h">--</div><div class="rp-lbl">Timer</div></div>
+      <div class="rp-unit"><div class="rp-num" id="rp-m">--</div><div class="rp-lbl">Min</div></div>
+      <div class="rp-unit"><div class="rp-num" id="rp-s">--</div><div class="rp-lbl">Sek</div></div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var target=new Date('2026-11-28T00:00:00+01:00').getTime();
+  var dayEnd=target+864e5;
+  var banner=document.getElementById('releaseparty');
+  var box=document.getElementById('rp-count');
+  var els={d:document.getElementById('rp-d'),h:document.getElementById('rp-h'),m:document.getElementById('rp-m'),s:document.getElementById('rp-s')};
+  function pad(n){return n<10?'0'+n:''+n;}
+  function tick(){
+    var now=Date.now();
+    if(now>=dayEnd){banner.style.display='none';clearInterval(t);return;}
+    if(now>=target){box.innerHTML='<div class="rp-today">I dag!</div>';clearInterval(t);return;}
+    var diff=Math.floor((target-now)/1000);
+    els.d.textContent=Math.floor(diff/86400);
+    els.h.textContent=pad(Math.floor(diff%86400/3600));
+    els.m.textContent=pad(Math.floor(diff%3600/60));
+    els.s.textContent=pad(diff%60);
+  }
+  var t=setInterval(tick,1000);tick();
+})();
+</script>
 
 <!-- MUSIKK -->
 <section class="sek" id="musikk" style="background:var(--bg2);">
