@@ -77,7 +77,7 @@ main{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:120px 36
 .fg-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
 
 /* SIZE PICKER */
-.sizes{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.sizes{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;}
 .size{
   position:relative;display:flex;align-items:center;justify-content:center;
   height:54px;background:rgba(15,15,42,.7);border:1px solid rgba(239,240,255,.22);border-radius:3px;
@@ -194,6 +194,7 @@ main{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:120px 36
 /* RESPONSIVE */
 @media(max-width:900px){
   main{grid-template-columns:1fr;padding:96px 18px 60px;gap:32px;}
+  .sizes{grid-template-columns:repeat(3,1fr);}
   .summary{position:relative;top:auto;}
 }
 @media(max-width:600px){
@@ -223,11 +224,12 @@ main{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:120px 36
     <div class="step">
       <div class="step-head"><div class="step-num">1</div><div class="step-title">Velg størrelse</div></div>
       <div class="sizes" id="sizes">
-        <label class="size"><input type="radio" name="size" value="XS"/>XS</label>
         <label class="size"><input type="radio" name="size" value="S"/>S</label>
         <label class="size selected"><input type="radio" name="size" value="M" checked/>M</label>
         <label class="size"><input type="radio" name="size" value="L"/>L</label>
         <label class="size"><input type="radio" name="size" value="XL"/>XL</label>
+        <label class="size"><input type="radio" name="size" value="2XL"/>2XL</label>
+        <label class="size"><input type="radio" name="size" value="3XL"/>3XL</label>
       </div>
 
       <div class="fg" style="margin-top:6px;">
