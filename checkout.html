@@ -157,6 +157,8 @@ main{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:120px 36
 .btn-pay svg{width:14px;height:14px;}
 
 /* PRE-ORDER NOTE */
+.terms-note{font-size:.72rem;line-height:1.6;color:var(--dim);text-align:center;margin-top:12px;}
+.terms-note a{color:var(--cyan);text-decoration:underline;text-underline-offset:2px;}
 .secure{display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);justify-content:center;text-align:center;margin-top:4px;}
 .secure svg{width:11px;height:11px;color:var(--pink);}
 
@@ -296,6 +298,7 @@ main{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:120px 36
       <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
       Sikker betaling via Stripe
     </div>
+    <p class="terms-note">Ved å gå videre godtar du <a href="kjopsvilkar.html" target="_blank">kjøpsvilkårene</a>. Du har 14 dagers angrerett.</p>
   </aside>
 </main>
 
@@ -432,6 +435,7 @@ document.head.appendChild(sty);
 <footer style="padding:1.5rem 36px;border-top:1px solid rgba(239,240,255,.07);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;background:#030309;">
   <span style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.12em;color:#EFF0FF;opacity:.4;">STROBE</span>
   <span style="font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(239,240,255,.4);">© 2026 Strobe · Alle rettigheter forbeholdt</span>
+  <a href="kjopsvilkar.html" style="font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(239,240,255,.45);transition:color .2s;" onmouseover="this.style.color='#00EEFF'" onmouseout="this.style.color='rgba(239,240,255,.45)'">Kjøpsvilkår</a>
   <a href="personvern.html" style="font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(239,240,255,.45);transition:color .2s;" onmouseover="this.style.color='#00EEFF'" onmouseout="this.style.color='rgba(239,240,255,.45)'">Personvern</a>
   <span style="font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;color:rgba(0,238,255,.18);">BYGGET AV <a href="https://hanaamedyan.github.io/yamsas/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 16px;text-decoration:none;"><svg width="18" height="22" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="10" y1="12" x2="2" y2="2" stroke="white" stroke-width="2.2" stroke-linecap="round"/><line x1="10" y1="12" x2="18" y2="2" stroke="white" stroke-width="2.2" stroke-linecap="round"/><line x1="10" y1="12" x2="10" y2="22" stroke="white" stroke-width="2.2" stroke-linecap="round"/><circle cx="10" cy="12" r="2.8" fill="#C8A660"/></svg><div style="line-height:1.2;"><div style="font-size:13px;font-weight:800;color:#FFFFFF;letter-spacing:-.2px;line-height:1.1;">YAMS <span style="font-weight:400;font-size:11px;color:rgba(255,255,255,.5);">AS</span></div><div style="font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.38);margin-top:2px;">Website Solutions</div></div></a></span>
 </footer>
