@@ -219,7 +219,8 @@ footer{padding:2.5rem 44px;border-top:1px solid rgba(239,240,255,.07);display:fl
 .booking-cta .section-head em{color:var(--pink);}
 .booking-text{font-size:.95rem;color:var(--dim);line-height:1.85;max-width:540px;}
 .booking-types{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px;}
-.booking-types span{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--white);border:1px solid rgba(239,240,255,.14);border-radius:20px;padding:.45rem .9rem;}
+.booking-types a{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--white);border:1px solid rgba(239,240,255,.14);border-radius:20px;padding:.45rem .9rem;transition:border-color .2s,color .2s,transform .2s;}
+.booking-types a:hover{border-color:var(--pink);color:var(--pink);transform:translateY(-1px);}
 .booking-side{display:flex;flex-direction:column;align-items:flex-start;gap:14px;}
 .btn-pink{display:inline-flex;align-items:center;gap:10px;background:var(--pink);color:#fff;font-family:'DM Mono',monospace;font-size:.7rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:1.05rem 2.1rem;transition:box-shadow .2s,transform .2s;box-shadow:0 0 24px rgba(255,42,127,.35);}
 .btn-pink:hover{box-shadow:0 0 44px rgba(255,42,127,.55);transform:translateY(-2px);}
@@ -364,7 +365,7 @@ footer{padding:2.5rem 44px;border-top:1px solid rgba(239,240,255,.07);display:fl
       <h2 class="section-head rev d1">Vil du booke <em>Strobe?</em></h2>
       <p class="booking-text rev d2">Vi spiller konserter, festivaler, private fester og bedriftsarrangementer i Trondheim og resten av landet. Fortell oss litt om arrangementet ditt, så tar vi kontakt.</p>
       <div class="booking-types rev d2">
-        <span>Konsert</span><span>Festival</span><span>Privat fest</span><span>Bedrift</span><span>Studentfest</span>
+        <a href="booking.html?type=Konsert%20/%20Live%20show#booking-form">Konsert</a><a href="booking.html?type=Festival#booking-form">Festival</a><a href="booking.html?type=Privat%20fest#booking-form">Privat fest</a><a href="booking.html?type=Bedriftsarrangement#booking-form">Bedrift</a><a href="booking.html?type=Studentfest#booking-form">Studentfest</a>
       </div>
     </div>
     <div class="booking-side rev d1">

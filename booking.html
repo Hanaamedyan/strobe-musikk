@@ -936,6 +936,11 @@ document.querySelectorAll('.faq-q').forEach(btn=>{
 })();
 </script>
 <script>
+(function(){
+  var t=new URLSearchParams(location.search).get('type');
+  var sel=document.querySelector('#bform select[name="type"]');
+  if(t&&sel&&[].some.call(sel.options,function(o){return o.value===t;})) sel.value=t;
+})();
 document.querySelectorAll('.type-card[data-type]').forEach(function(card){
   card.addEventListener('click',function(){
     var sel=document.querySelector('#bform select[name="type"]');
