@@ -214,7 +214,8 @@ footer{padding:2.5rem 44px;border-top:1px solid rgba(239,240,255,.07);display:fl
 .photo-inner{max-width:1280px;margin:0 auto;}
 .photo-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:40px;}
 .photo-top .section-head{margin-bottom:0;}
-.photo-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;}
+.photo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.photo-item.photo-wide{grid-column:1/-1;aspect-ratio:1280/426;}
 .photo-item{position:relative;aspect-ratio:3/4;overflow:hidden;border-radius:4px;background:var(--bg3);border:1px solid rgba(0,238,255,.08);cursor:pointer;padding:0;}
 .photo-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.16,1,.3,1),filter .4s;filter:saturate(.9);}
 .photo-item:hover img{transform:scale(1.06);filter:saturate(1.1);}
@@ -247,7 +248,9 @@ footer{padding:2.5rem 44px;border-top:1px solid rgba(239,240,255,.07);display:fl
   .about-section,.members-section,.cta-strip,.booking-cta{padding:70px 20px;}
   .booking-inner{grid-template-columns:1fr;gap:32px;}
   .photo-section{padding:70px 20px;}
-  .photo-grid{grid-template-columns:repeat(3,1fr);gap:8px;}
+  .photo-grid{grid-template-columns:repeat(6,1fr);gap:8px;}
+  .photo-item{grid-column:span 2;}
+  .photo-item:nth-child(4),.photo-item:nth-child(5){grid-column:span 3;}
   .about-inner{grid-template-columns:1fr;gap:3rem;}
   .members-grid{grid-template-columns:1fr;}
   footer{padding:2rem 20px;}
@@ -409,12 +412,12 @@ footer{padding:2.5rem 44px;border-top:1px solid rgba(239,240,255,.07);display:fl
       </a>
     </div>
     <div class="photo-grid">
-      <button type="button" class="photo-item rev" aria-label="Vis bilde: Strobe live"><img src="IMG_0726.JPG" alt="Strobe live" loading="lazy"/></button>
-      <button type="button" class="photo-item rev d1" aria-label="Vis bilde: Strobe live"><img src="IMG_0728.JPG" alt="Strobe live" loading="lazy"/></button>
-      <button type="button" class="photo-item rev d2" aria-label="Vis bilde: Strobe live"><img src="IMG_0734.JPG" alt="Strobe live" loading="lazy"/></button>
-      <button type="button" class="photo-item rev d1" aria-label="Vis bilde: Strobe live"><img src="IMG_0739.JPG" alt="Strobe live" loading="lazy"/></button>
-      <button type="button" class="photo-item rev d2" aria-label="Vis bilde: Strobe bak kulissene"><img src="IMG_0782.jpg" alt="Strobe bak kulissene" loading="lazy"/></button>
-      <button type="button" class="photo-item rev d3" aria-label="Vis bilde: Strobe bak kulissene"><img src="IMG_ny_terrasse.jpg" alt="Strobe bak kulissene" loading="lazy"/></button>
+      <button type="button" class="photo-item rev" aria-label="Vis bilde: Strobe i studio"><img src="strobe-studio.jpg" alt="Strobe i studio" loading="lazy"/></button>
+      <button type="button" class="photo-item rev d1" aria-label="Vis bilde: Strobe i skjorte og slips"><img src="strobe-dress.jpg" alt="Strobe i skjorte og slips" loading="lazy"/></button>
+      <button type="button" class="photo-item rev d2" aria-label="Vis bilde: Strobe på kostymefest"><img src="strobe-kostymefest.jpg" alt="Strobe på kostymefest" loading="lazy"/></button>
+      <button type="button" class="photo-item rev d1" aria-label="Vis bilde: Strobe henger opp banner"><img src="strobe-banner.jpg" alt="Strobe henger opp banner" loading="lazy"/></button>
+      <button type="button" class="photo-item rev d2" aria-label="Vis bilde: Strobe-klistremerker på bordet"><img src="strobe-klistremerker.jpg" alt="Strobe-klistremerker på bordet" loading="lazy"/></button>
+      <button type="button" class="photo-item rev photo-wide" aria-label="Vis bilde: STROBE – Velkommen!-banner"><img src="strobe-banner-velkommen.jpg" alt="STROBE – Velkommen!-banner" loading="lazy"/></button>
     </div>
   </div>
 </section>
